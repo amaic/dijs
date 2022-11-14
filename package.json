@@ -1,0 +1,33 @@
+{
+  "name": "@amaic/dijs",
+  "version": "0.0.1",
+  "description": "dependency injection for typescript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amaic/dijs.git"
+  },
+  "keywords": [
+    "dependency injection",
+    "DI",
+    "typescript",
+    "TS"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amaic/dijs/issues"
+  },
+  "homepage": "https://github.com/amaic/dijs#readme",
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  }
+}
