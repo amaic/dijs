@@ -1,2 +1,2 @@
 # dijs
-dependency injection for typescript
+dependency injection
