@@ -1,1 +1,3 @@
-console.debug("let's start here!");
+export * from './interfaces/IServiceCollection';
+export * from './interfaces/IServiceProvider';
+export * from './classes/ServiceCollection';
