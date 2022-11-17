@@ -3,6 +3,7 @@ import { ServiceConstructor, ServiceConstructorTypedParameters } from "../types/
 import { ServiceType } from "../types/ServiceType";
 import IServiceProvider from "../interfaces/IServiceProvider";
 export default class ServiceCollection implements IServiceCollection {
+    IServiceCollection: true;
     constructor();
     private readonly _serviceDescriptors;
     private readonly _mainScope;

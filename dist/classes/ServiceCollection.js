@@ -10,6 +10,7 @@ const ServiceScope_1 = __importDefault(require("./ServiceScope"));
 const ServiceIdentifierAlreadyInUseError_1 = __importDefault(require("../errors/ServiceIdentifierAlreadyInUseError"));
 class ServiceCollection {
     constructor() {
+        this.IServiceCollection = true;
         this._serviceDescriptors = {};
         this._mainScope = new ServiceScope_1.default(null, this._getServiceDescriptor.bind(this));
         this.RegisterInstance(IServiceCollection_1.IServiceCollectionIdentifier, this);

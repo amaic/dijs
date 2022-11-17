@@ -9,6 +9,8 @@ import ServiceIdentifierAlreadyInUseError from "../errors/ServiceIdentifierAlrea
 
 export default class ServiceCollection implements IServiceCollection
 {
+    IServiceCollection: true = true;
+
     constructor()
     {
         this._mainScope = new ServiceScope(null, this._getServiceDescriptor.bind(this));
@@ -32,7 +34,7 @@ export default class ServiceCollection implements IServiceCollection
     )
     {
         if (this._serviceDescriptors[serviceIdentifier] !== undefined)
-            throw new ServiceIdentifierAlreadyInUseError(`Service with identifier '${serviceIdentifier.description}' already registered.`);
+            throw new ServiceIdentifierAlreadyInUseError(`Service with identifier '${ serviceIdentifier.description }' already registered.`);
 
         this._serviceDescriptors[serviceIdentifier] = new ServiceDescriptor(
             serviceIdentifier,

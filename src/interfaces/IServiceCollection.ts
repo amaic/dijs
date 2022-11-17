@@ -5,6 +5,8 @@ import IServiceProvider from "./IServiceProvider";
 export const IServiceCollectionIdentifier = Symbol("IServiceCollection");
 export default interface IServiceCollection
 {
+    IServiceCollection: true;
+
     RegisterInstance<Interface, Class extends Interface>(
         serviceIdentifier: symbol,
         instance: Class
