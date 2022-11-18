@@ -1,5 +1,5 @@
 import ServiceCollection from '../src/classes/ServiceCollection'
-import IServiceCollection, { IServiceCollectionIdentifier } from '../src/interfaces/IServiceCollection';
+import IServiceCollection, { IServiceCollectionIdentifier, IServiceCollectionInfo } from '../src/interfaces/IServiceCollection';
 import { ServiceType } from '../src/types/ServiceType';
 
 describe("ServiceCollection", () =>
@@ -12,9 +12,15 @@ describe("ServiceCollection", () =>
 
         const serviceCollection2 = serviceProvider.GetService<IServiceCollection>(IServiceCollectionIdentifier);
 
-        expect(serviceCollection2.IServiceCollection).toBeTruthy();
+        expect(serviceCollection2.IServiceCollection).toBe(IServiceCollectionIdentifier);
 
         expect(serviceCollection2).toBe(serviceCollection1);
+
+        const serviceCollection3 = serviceProvider.GetServiceV2<IServiceCollection, typeof IServiceCollectionInfo>(IServiceCollectionInfo);
+
+        expect(serviceCollection3.IServiceCollection).toBe(IServiceCollectionIdentifier);
+
+        expect(serviceCollection3).toBe(serviceCollection1);
     });
 
     test("register service", () =>

@@ -2,6 +2,7 @@ import UnknownOrUnsupportedServiceTypeError from "../errors/UnknownOrUnsupported
 import UnknownServiceIdentifierError from "../errors/UnknownServiceIdentifierError";
 import IServiceProvider from "../interfaces/IServiceProvider";
 import { SymbolKeyDictionary } from "../types/Dictionary";
+import { InterfaceInfoConstructor } from "../types/InterfaceInfoConstructor";
 import { ServiceType } from "../types/ServiceType";
 import Service from "./Service";
 import ServiceDescriptor from "./ServiceDescriptor";
@@ -80,5 +81,18 @@ export default class ServiceScope implements IServiceProvider
         return service.GetInstance(instanceName);
     }
 
+    public GetServiceV2<INTERFACE, INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>>(interfaceInfoType: INTERFACEINFO, instanceName?: string): INTERFACE
+    {
+        const interfaceInfo = new interfaceInfoType();
 
+        const serviceDescriptor = this._getServiceDescriptor(interfaceInfo.Identifier);
+
+        if (serviceDescriptor === undefined)
+            throw new UnknownServiceIdentifierError(`Service with identifier '${ interfaceInfo.Identifier.description }' not found.`);
+
+        const service = this._getService(serviceDescriptor)
+
+        return service.GetInstance(instanceName);
+
+    }
 }

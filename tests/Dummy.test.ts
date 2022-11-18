@@ -59,7 +59,7 @@ describe("Dummy", () =>
             services[interfaceProxy.Identifier] = instance;
         }
 
-        function getService<INTERFACE>(interfaceProxyType: { new(): IInterfaceProxy<INTERFACE> }): INTERFACE
+        function getService<INTERFACEPROXY extends { new(): IInterfaceProxy<any> }>(interfaceProxyType: INTERFACEPROXY): any
         {
             const interfaceProxy = new interfaceProxyType();
 
@@ -73,7 +73,7 @@ describe("Dummy", () =>
 
         registerService<ITest1, typeof ITest1Proxy, typeof Test1>(ITest1Proxy, Test1);
 
-        const service = getService<ITest1>(ITest1Proxy);
+        const service:ITest1 = getService<typeof ITest1Proxy>(ITest1Proxy);
 
         console.debug(service.AMethod());
     });

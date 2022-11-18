@@ -45,6 +45,14 @@ class ServiceScope {
         const service = this._getService(serviceDescriptor);
         return service.GetInstance(instanceName);
     }
+    GetServiceV2(interfaceInfoType, instanceName) {
+        const interfaceInfo = new interfaceInfoType();
+        const serviceDescriptor = this._getServiceDescriptor(interfaceInfo.Identifier);
+        if (serviceDescriptor === undefined)
+            throw new UnknownServiceIdentifierError_1.default(`Service with identifier '${interfaceInfo.Identifier.description}' not found.`);
+        const service = this._getService(serviceDescriptor);
+        return service.GetInstance(instanceName);
+    }
 }
 exports.default = ServiceScope;
 //# sourceMappingURL=ServiceScope.js.map

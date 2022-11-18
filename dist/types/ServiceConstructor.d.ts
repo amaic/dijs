@@ -1,7 +1,7 @@
-export declare type ServiceConstructor<Class> = {
-    new (...args: any[]): Class;
+export declare type ServiceConstructor<CLASS> = {
+    new (...args: any[]): CLASS;
 };
-export declare type ServiceConstructorTypedParameters<Class, Parameters> = {
-    new (parameters: Parameters): Class;
+export declare type ServiceConstructorTypedParameters<CLASS, PARAMETERS> = {
+    new (parameters: PARAMETERS): CLASS;
 };
 //# sourceMappingURL=ServiceConstructor.d.ts.map

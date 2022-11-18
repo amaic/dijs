@@ -1,3 +1,3 @@
-export type ServiceConstructor<Class> = { new(...args: any[]): Class; };
+export type ServiceConstructor<CLASS> = { new(...args: any[]): CLASS; };
 
-export type ServiceConstructorTypedParameters<Class, Parameters> = { new(parameters: Parameters): Class; };
+export type ServiceConstructorTypedParameters<CLASS, PARAMETERS> = { new(parameters: PARAMETERS): CLASS; };
