@@ -1,4 +1,4 @@
-import IServiceCollection, { IServiceCollectionIdentifier } from "../interfaces/IServiceCollection";
+import IServiceCollection, { IServiceCollectionIdentifier, IServiceCollectionInfo } from "../interfaces/IServiceCollection";
 import { ServiceConstructor, ServiceConstructorTypedParameters } from "../types/ServiceConstructor";
 import { SymbolKeyDictionary } from "../types/Dictionary";
 import { ServiceType } from "../types/ServiceType";
@@ -7,7 +7,7 @@ import IServiceProvider from "../interfaces/IServiceProvider";
 import ServiceScope from "./ServiceScope";
 import ServiceIdentifierAlreadyInUseError from "../errors/ServiceIdentifierAlreadyInUseError";
 import IInterfaceInfo from "../interfaces/IInterfaceInfo";
-import DiscriminatorMissmatch from "../errors/DiscriminatorMissmatch";
+import { InterfaceInfoConstructor } from "../types/InterfaceInfoConstructor";
 
 export default class ServiceCollection implements IServiceCollection
 {
@@ -17,7 +17,7 @@ export default class ServiceCollection implements IServiceCollection
     {
         this._mainScope = new ServiceScope(null, this._getServiceDescriptor.bind(this));
 
-        this.RegisterInstance<IServiceCollection, ServiceCollection>(IServiceCollectionIdentifier, this);
+        this.RegisterInstance<IServiceCollection, typeof IServiceCollectionInfo, ServiceCollection>(IServiceCollectionInfo, this);
     }
 
     private readonly _serviceDescriptors: SymbolKeyDictionary<ServiceDescriptor<any>> = {};
@@ -45,18 +45,9 @@ export default class ServiceCollection implements IServiceCollection
         );
     }
 
-    public RegisterInstance<Interface, Class extends Interface>(serviceIdentifier: symbol, instance: Class)
-    {
-        this._registerService(
-            ServiceType.Instance,
-            serviceIdentifier,
-            () => instance
-        );
-    }
-
-    public RegisterInstanceV2<
+    public RegisterInstance<
         INTERFACE,
-        INTERFACEINFO extends new () => IInterfaceInfo<INTERFACE>,
+        INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>,
         INSTANCE extends INTERFACE>
         (interfaceInfoType: INTERFACEINFO, instance: INSTANCE): void
     {
@@ -69,28 +60,14 @@ export default class ServiceCollection implements IServiceCollection
         )
     }
 
-    public Register<Interface, Class extends Interface>(
-        serviceType: ServiceType,
-        serviceIdentifier: symbol,
-        serviceConstructor: ServiceConstructor<Class>,
-        serviceConstructorParameters: (serviceProvider: IServiceProvider) => any[] = () => []
-    )
-    {
-        this._registerService(
-            serviceType,
-            serviceIdentifier,
-            (serviceProvider) => new serviceConstructor(...serviceConstructorParameters(serviceProvider))
-        );
-    }
-
-    public RegisterV2<
+    public Register<
         INTERFACE,
-        INTERFACEINFO extends new () => IInterfaceInfo<INTERFACE>,
-        CLASS extends INTERFACE>
+        INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>,
+        CLASS extends ServiceConstructor<INTERFACE>>
         (
             serviceType: ServiceType,
             interfaceInfoType: INTERFACEINFO,
-            serviceConstructor: ServiceConstructor<CLASS>,
+            classType: CLASS,
             serviceConstructorParameters: (serviceProvider: IServiceProvider) => any[] = () => []
         )
     {
@@ -99,33 +76,19 @@ export default class ServiceCollection implements IServiceCollection
         this._registerService(
             serviceType,
             interfaceInfo.Identifier,
-            (serviceProvider) => new serviceConstructor(...serviceConstructorParameters(serviceProvider))
+            (serviceProvider) => new classType(...serviceConstructorParameters(serviceProvider))
         );
     }
 
-    public RegisterTypedParameters<Interface, Class extends Interface, Parameters>(
-        serviceType: ServiceType,
-        serviceIdentifier: symbol,
-        serviceConstructor: ServiceConstructorTypedParameters<Class, Parameters>,
-        serviceConstructorParameters: (serviceProvider: IServiceProvider) => Parameters
-    )
-    {
-        this._registerService(
-            serviceType,
-            serviceIdentifier,
-            (serviceProvider) => new serviceConstructor(serviceConstructorParameters(serviceProvider))
-        );
-    }
-
-    public RegisterTypedParametersV2<
+    public RegisterTypedParameters<
         INTERFACE,
-        INTERFACEINFO extends new () => IInterfaceInfo<INTERFACE>,
-        CLASS extends INTERFACE,
-        PARAMETERS>
+        INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>,
+        CLASS extends ServiceConstructor<INTERFACE>,
+        PARAMETERS extends any[]>
         (
             serviceType: ServiceType,
             interfaceInfoType: INTERFACEINFO,
-            serviceConstructor: ServiceConstructorTypedParameters<CLASS, PARAMETERS>,
+            classType: ServiceConstructorTypedParameters<CLASS, PARAMETERS>,
             serviceConstructorParameters: (serviceProvider: IServiceProvider) => PARAMETERS
         ): void
     {
@@ -134,7 +97,7 @@ export default class ServiceCollection implements IServiceCollection
         this._registerService(
             serviceType,
             interfaceInfo.Identifier,
-            (serviceProvider) => new serviceConstructor(serviceConstructorParameters(serviceProvider))
+            (serviceProvider) => new classType(...serviceConstructorParameters(serviceProvider))
         );
 
     }

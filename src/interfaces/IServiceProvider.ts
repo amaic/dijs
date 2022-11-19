@@ -2,7 +2,7 @@ import { InterfaceInfoConstructor } from "../types/InterfaceInfoConstructor";
 
 export default interface IServiceProvider
 {
-    GetService<INTERFACE>(serviceIdentifier: symbol, interfaceName?: string): INTERFACE;
+    GetService(serviceIdentifier: symbol, interfaceName?: string): any;
 
-    GetServiceV2<INTERFACE, INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>>(interfaceInfoType: INTERFACEINFO, instanceName?: string): INTERFACE;
+    GetService<INTERFACE>(serviceIdentifier: symbol, interfaceName?: string): INTERFACE;
 }

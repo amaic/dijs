@@ -13,7 +13,7 @@ class ServiceCollection {
         this.IServiceCollection = IServiceCollection_1.IServiceCollectionIdentifier;
         this._serviceDescriptors = {};
         this._mainScope = new ServiceScope_1.default(null, this._getServiceDescriptor.bind(this));
-        this.RegisterInstance(IServiceCollection_1.IServiceCollectionIdentifier, this);
+        this.RegisterInstance(IServiceCollection_1.IServiceCollectionInfo, this);
     }
     _getServiceDescriptor(serviceIdentifier) {
         return this._serviceDescriptors[serviceIdentifier];
@@ -23,26 +23,17 @@ class ServiceCollection {
             throw new ServiceIdentifierAlreadyInUseError_1.default(`Service with identifier '${serviceIdentifier.description}' already registered.`);
         this._serviceDescriptors[serviceIdentifier] = new ServiceDescriptor_1.default(serviceIdentifier, serviceType, serviceConstructor);
     }
-    RegisterInstance(serviceIdentifier, instance) {
-        this._registerService(ServiceType_1.ServiceType.Instance, serviceIdentifier, () => instance);
-    }
-    RegisterInstanceV2(interfaceInfoType, instance) {
+    RegisterInstance(interfaceInfoType, instance) {
         const interfaceInfo = new interfaceInfoType();
         this._registerService(ServiceType_1.ServiceType.Instance, interfaceInfo.Identifier, () => instance);
     }
-    Register(serviceType, serviceIdentifier, serviceConstructor, serviceConstructorParameters = () => []) {
-        this._registerService(serviceType, serviceIdentifier, (serviceProvider) => new serviceConstructor(...serviceConstructorParameters(serviceProvider)));
-    }
-    RegisterV2(serviceType, interfaceInfoType, serviceConstructor, serviceConstructorParameters = () => []) {
+    Register(serviceType, interfaceInfoType, classType, serviceConstructorParameters = () => []) {
         const interfaceInfo = new interfaceInfoType();
-        this._registerService(serviceType, interfaceInfo.Identifier, (serviceProvider) => new serviceConstructor(...serviceConstructorParameters(serviceProvider)));
+        this._registerService(serviceType, interfaceInfo.Identifier, (serviceProvider) => new classType(...serviceConstructorParameters(serviceProvider)));
     }
-    RegisterTypedParameters(serviceType, serviceIdentifier, serviceConstructor, serviceConstructorParameters) {
-        this._registerService(serviceType, serviceIdentifier, (serviceProvider) => new serviceConstructor(serviceConstructorParameters(serviceProvider)));
-    }
-    RegisterTypedParametersV2(serviceType, interfaceInfoType, serviceConstructor, serviceConstructorParameters) {
+    RegisterTypedParameters(serviceType, interfaceInfoType, classType, serviceConstructorParameters) {
         const interfaceInfo = new interfaceInfoType();
-        this._registerService(serviceType, interfaceInfo.Identifier, (serviceProvider) => new serviceConstructor(serviceConstructorParameters(serviceProvider)));
+        this._registerService(serviceType, interfaceInfo.Identifier, (serviceProvider) => new classType(...serviceConstructorParameters(serviceProvider)));
     }
     GetServiceProvider() {
         return this._mainScope;

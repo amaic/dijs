@@ -8,43 +8,21 @@ export default interface IServiceCollection
 {
     IServiceCollection: symbol;
 
-    RegisterInstance<Interface, Class extends Interface>
-        (
-            serviceIdentifier: symbol,
-            instance: Class
-        ): void;
-
-    RegisterInstanceV2<INTERFACE, INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>, INSTANCE extends INTERFACE>
+    RegisterInstance<INTERFACE, INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>, INSTANCE extends INTERFACE>
         (
             interfaceInfoType: INTERFACEINFO,
             instance: INSTANCE
         ): void;
 
-    Register<Interface, Class extends Interface>
-        (
-            serviceType: ServiceType,
-            serviceIdentifier: symbol,
-            serviceConstructor: ServiceConstructor<Class>,
-            serviceConstructorParameters?: (serviceProvider: IServiceProvider) => any[]
-        ): void;
-
-    RegisterV2<INTERFACE, INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>, CLASS extends INTERFACE>
+    Register<INTERFACE, INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>, CLASS extends ServiceConstructor<INTERFACE>>
         (
             serviceType: ServiceType,
             interfaceInfoType: INTERFACEINFO,
-            serviceConstructor: ServiceConstructor<CLASS>,
+            classType: CLASS,
             serviceConstructorParameters?: (serviceProvider: IServiceProvider) => any[]
         ): void;
 
-    RegisterTypedParameters<Interface, Class extends Interface, Parameters>
-        (
-            serviceType: ServiceType,
-            serviceIdentifier: symbol,
-            serviceConstructor: ServiceConstructorTypedParameters<Class, Parameters>,
-            serviceConstructorParameters: (serviceProvider: IServiceProvider) => Parameters
-        ): void;
-
-    RegisterTypedParametersV2<INTERFACE, INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>, CLASS extends INTERFACE, PARAMETERS>
+    RegisterTypedParameters<INTERFACE, INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>, CLASS extends ServiceConstructor<INTERFACE>, PARAMETERS extends any[]>
         (
             serviceType: ServiceType,
             interfaceInfoType: INTERFACEINFO,

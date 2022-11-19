@@ -80,19 +80,4 @@ export default class ServiceScope implements IServiceProvider
 
         return service.GetInstance(instanceName);
     }
-
-    public GetServiceV2<INTERFACE, INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>>(interfaceInfoType: INTERFACEINFO, instanceName?: string): INTERFACE
-    {
-        const interfaceInfo = new interfaceInfoType();
-
-        const serviceDescriptor = this._getServiceDescriptor(interfaceInfo.Identifier);
-
-        if (serviceDescriptor === undefined)
-            throw new UnknownServiceIdentifierError(`Service with identifier '${ interfaceInfo.Identifier.description }' not found.`);
-
-        const service = this._getService(serviceDescriptor)
-
-        return service.GetInstance(instanceName);
-
-    }
 }
