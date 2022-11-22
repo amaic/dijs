@@ -1,3 +1,4 @@
+import ScopedNotAllowedInMainContext from "../errors/ScopedNotAllowedInMainContext";
 import UnknownOrUnsupportedServiceTypeError from "../errors/UnknownOrUnsupportedServiceTypeError";
 import UnknownServiceIdentifierError from "../errors/UnknownServiceIdentifierError";
 import IServiceProvider from "../interfaces/IServiceProvider";
@@ -24,16 +25,19 @@ export default class ServiceScope implements IServiceProvider
 
     private readonly _services: SymbolKeyDictionary<Service<any>> = {};
 
+    public get IsMainContext(): boolean
+    {
+        return this._parentScope == null;
+    }
+
     private _getService(serviceDescriptor: ServiceDescriptor<any>): Service<any>
     {
         switch (serviceDescriptor.ServiceType)
         {
             case ServiceType.Instance:
-
-                return new Service(this, serviceDescriptor);
-
             case ServiceType.Singleton:
             case ServiceType.Named:
+            case ServiceType.Transient:
 
                 if (this._parentScope === null)
                 {
@@ -76,8 +80,28 @@ export default class ServiceScope implements IServiceProvider
         if (serviceDescriptor === undefined)
             throw new UnknownServiceIdentifierError(`Service with identifier '${ serviceIdentifier.description }' not found.`);
 
+        switch (serviceDescriptor.ServiceType)
+        {
+            case ServiceType.Scoped:
+            case ServiceType.NamedScoped:
+                
+                if (this.IsMainContext)
+                {
+                    throw new ScopedNotAllowedInMainContext();
+                }
+                break;
+
+            default:
+                break;
+        }
+
         const service = this._getService(serviceDescriptor)
 
         return service.GetInstance(instanceName);
+    }
+
+    public CreateScope(): IServiceProvider
+    {
+        return new ServiceScope(this, this._getServiceDescriptor);
     }
 }

@@ -35,6 +35,7 @@ export default class Service<Class>
                 if (instanceName !== undefined)
                     throw new InstanceNameNotAvailableError(`Service is of type '${ this._serviceDescriptor.ServiceType }' and parameter 'instanceName' must be null.`);
 
+                instanceName = "";
                 break;
 
             case ServiceType.Named:
@@ -51,11 +52,11 @@ export default class Service<Class>
 
         switch (this._serviceDescriptor.ServiceType)
         {
-            case ServiceType.Instance:
             case ServiceType.Transient:
 
                 return this._serviceDescriptor.ServiceConstructor(this._serviceProvider);
 
+            case ServiceType.Instance:
             case ServiceType.Singleton:
             case ServiceType.Scoped:
 

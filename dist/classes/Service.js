@@ -21,6 +21,7 @@ class Service {
             case ServiceType_1.ServiceType.Scoped:
                 if (instanceName !== undefined)
                     throw new InstanceNameNotAvailableError_1.default(`Service is of type '${this._serviceDescriptor.ServiceType}' and parameter 'instanceName' must be null.`);
+                instanceName = "";
                 break;
             case ServiceType_1.ServiceType.Named:
             case ServiceType_1.ServiceType.NamedScoped:
@@ -31,9 +32,9 @@ class Service {
                 break;
         }
         switch (this._serviceDescriptor.ServiceType) {
-            case ServiceType_1.ServiceType.Instance:
             case ServiceType_1.ServiceType.Transient:
                 return this._serviceDescriptor.ServiceConstructor(this._serviceProvider);
+            case ServiceType_1.ServiceType.Instance:
             case ServiceType_1.ServiceType.Singleton:
             case ServiceType_1.ServiceType.Scoped:
                 if (this._instances[""] === undefined) {

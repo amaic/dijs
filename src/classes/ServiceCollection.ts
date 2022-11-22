@@ -6,7 +6,6 @@ import ServiceDescriptor from "./ServiceDescriptor";
 import IServiceProvider from "../interfaces/IServiceProvider";
 import ServiceScope from "./ServiceScope";
 import ServiceIdentifierAlreadyInUseError from "../errors/ServiceIdentifierAlreadyInUseError";
-import IInterfaceInfo from "../interfaces/IInterfaceInfo";
 import { InterfaceInfoConstructor } from "../types/InterfaceInfoConstructor";
 
 export default class ServiceCollection implements IServiceCollection
