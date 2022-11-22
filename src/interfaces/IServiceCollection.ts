@@ -14,20 +14,12 @@ export default interface IServiceCollection
             instance: INSTANCE
         ): void;
 
-    Register<INTERFACE, INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>, CLASS extends ServiceConstructor<INTERFACE>>
+    Register<INTERFACE, INTERFACEINFOTYPE extends InterfaceInfoConstructor<INTERFACE>, CLASSTYPE extends ServiceConstructor<INTERFACE>>
         (
             serviceType: ServiceType,
-            interfaceInfoType: INTERFACEINFO,
-            classType: CLASS,
-            serviceConstructorParameters?: (serviceProvider: IServiceProvider) => any[]
-        ): void;
-
-    RegisterTypedParameters<INTERFACE, INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>, CLASS extends ServiceConstructor<INTERFACE>, PARAMETERS extends any[]>
-        (
-            serviceType: ServiceType,
-            interfaceInfoType: INTERFACEINFO,
-            serviceConstructor: ServiceConstructorTypedParameters<CLASS, PARAMETERS>,
-            serviceConstructorParameters: (serviceProvider: IServiceProvider) => PARAMETERS
+            interfaceInfoType: INTERFACEINFOTYPE,
+            classType: CLASSTYPE,
+            constructor?: (classType: CLASSTYPE, serviceProvider: IServiceProvider) => INTERFACE
         ): void;
 
     GetServiceProvider(): IServiceProvider;

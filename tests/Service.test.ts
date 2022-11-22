@@ -186,13 +186,10 @@ describe("Service", () =>
         );
 
         sc.Register<ITest3, typeof ITest3Info, typeof Test3_a>(
-            ServiceType.Transient, ITest3Info, Test3_a, (sp) =>
-            {
-                return [
-                    sp.GetService(ITest1Identifier),
-                    sp.GetService(ITest2Identifier)
-                ];
-            }
+            ServiceType.Transient, ITest3Info, Test3_a, (classType, serviceProvider) => new classType(
+                serviceProvider.GetService(ITest1Identifier),
+                serviceProvider.GetService(ITest2Identifier)
+            )
         );
 
         const test3_a_1 = sp.GetService(ITest3Identifier);

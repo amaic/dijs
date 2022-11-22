@@ -59,47 +59,58 @@ export default class ServiceCollection implements IServiceCollection
         )
     }
 
-    public Register<
-        INTERFACE,
-        INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>,
-        CLASS extends ServiceConstructor<INTERFACE>>
-        (
-            serviceType: ServiceType,
-            interfaceInfoType: INTERFACEINFO,
-            classType: CLASS,
-            serviceConstructorParameters: (serviceProvider: IServiceProvider) => any[] = () => []
-        )
+    // public Register<
+    //     INTERFACE,
+    //     INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>,
+    //     CLASS extends ServiceConstructor<INTERFACE>>
+    //     (
+    //         serviceType: ServiceType,
+    //         interfaceInfoType: INTERFACEINFO,
+    //         classType: CLASS,
+    //         serviceConstructorParameters: (serviceProvider: IServiceProvider) => any[] = () => []
+    //     )
+    // {
+    //     const interfaceInfo = new interfaceInfoType();
+
+    //     this._registerService(
+    //         serviceType,
+    //         interfaceInfo.Identifier,
+    //         (serviceProvider) => new classType(...serviceConstructorParameters(serviceProvider))
+    //     );
+    // }
+
+    public Register<INTERFACE, INTERFACEINFOTYPE extends InterfaceInfoConstructor<INTERFACE>, CLASSTYPE extends ServiceConstructor<INTERFACE>>(serviceType: ServiceType, interfaceInfoType: INTERFACEINFOTYPE, classType: CLASSTYPE, constructor?: (classType: CLASSTYPE, serviceProvider: IServiceProvider) => INTERFACE): void
     {
         const interfaceInfo = new interfaceInfoType();
 
         this._registerService(
             serviceType,
             interfaceInfo.Identifier,
-            (serviceProvider) => new classType(...serviceConstructorParameters(serviceProvider))
+            (serviceProvider) => constructor === undefined ? new classType() : constructor(classType, serviceProvider)
         );
     }
 
-    public RegisterTypedParameters<
-        INTERFACE,
-        INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>,
-        CLASS extends ServiceConstructor<INTERFACE>,
-        PARAMETERS extends any[]>
-        (
-            serviceType: ServiceType,
-            interfaceInfoType: INTERFACEINFO,
-            classType: ServiceConstructorTypedParameters<CLASS, PARAMETERS>,
-            serviceConstructorParameters: (serviceProvider: IServiceProvider) => PARAMETERS
-        ): void
-    {
-        const interfaceInfo = new interfaceInfoType();
+    // public RegisterTypedParameters<
+    //     INTERFACE,
+    //     INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>,
+    //     CLASS extends ServiceConstructor<INTERFACE>,
+    //     PARAMETERS extends any[]>
+    //     (
+    //         serviceType: ServiceType,
+    //         interfaceInfoType: INTERFACEINFO,
+    //         classType: ServiceConstructorTypedParameters<CLASS, PARAMETERS>,
+    //         serviceConstructorParameters: (serviceProvider: IServiceProvider) => PARAMETERS
+    //     ): void
+    // {
+    //     const interfaceInfo = new interfaceInfoType();
 
-        this._registerService(
-            serviceType,
-            interfaceInfo.Identifier,
-            (serviceProvider) => new classType(...serviceConstructorParameters(serviceProvider))
-        );
+    //     this._registerService(
+    //         serviceType,
+    //         interfaceInfo.Identifier,
+    //         (serviceProvider) => new classType(...serviceConstructorParameters(serviceProvider))
+    //     );
 
-    }
+    // }
 
 
     public GetServiceProvider(): IServiceProvider
