@@ -8,9 +8,9 @@ export default interface IServiceCollection
 {
     IServiceCollection: symbol;
 
-    RegisterInstance<INTERFACE, INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>, INSTANCE extends INTERFACE>
+    RegisterInstance<INTERFACE, INTERFACEINFOTYPE extends InterfaceInfoConstructor<INTERFACE>, INSTANCE extends INTERFACE>
         (
-            interfaceInfoType: INTERFACEINFO,
+            interfaceInfoType: INTERFACEINFOTYPE,
             instance: INSTANCE
         ): void;
 
@@ -19,7 +19,7 @@ export default interface IServiceCollection
             serviceType: ServiceType,
             interfaceInfoType: INTERFACEINFOTYPE,
             classType: CLASSTYPE,
-            constructor?: (classType: CLASSTYPE, serviceProvider: IServiceProvider) => INTERFACE
+            constructor?: (classType: CLASSTYPE, serviceProvider: IServiceProvider, instanceName?: string) => INTERFACE
         ): void;
 
     GetServiceProvider(): IServiceProvider;

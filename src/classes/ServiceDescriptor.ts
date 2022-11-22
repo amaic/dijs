@@ -1,12 +1,12 @@
 import IServiceProvider from "../interfaces/IServiceProvider";
 import { ServiceType } from "../types/ServiceType";
 
-export default class ServiceDescriptor<Class>
+export default class ServiceDescriptor<CLASS>
 {
     constructor(
         serviceIdentifier: symbol,
         serviceType: ServiceType,
-        serviceConstructor: (serviceProvider: IServiceProvider) => Class
+        serviceConstructor: (serviceProvider: IServiceProvider, instanceName?: string) => CLASS
     )
     {
         this.ServiceIdentifier = serviceIdentifier;
@@ -18,6 +18,6 @@ export default class ServiceDescriptor<Class>
 
     public readonly ServiceType: ServiceType;
 
-    public readonly ServiceConstructor: (serviceProvider: IServiceProvider) => Class;
+    public readonly ServiceConstructor: (serviceProvider: IServiceProvider, instanceName?: string) => CLASS;
 
 }

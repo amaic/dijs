@@ -7,7 +7,6 @@ describe("Dummy", () =>
     {
         const test1Instance = Create<Test1, typeof Test1>(Test1, (classType) => new classType("abc", 123, true));
 
-        console.debug(test1Instance);
     });
 });
 

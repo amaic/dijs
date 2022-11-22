@@ -27,47 +27,10 @@ class ServiceCollection {
         const interfaceInfo = new interfaceInfoType();
         this._registerService(ServiceType_1.ServiceType.Instance, interfaceInfo.Identifier, () => instance);
     }
-    // public Register<
-    //     INTERFACE,
-    //     INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>,
-    //     CLASS extends ServiceConstructor<INTERFACE>>
-    //     (
-    //         serviceType: ServiceType,
-    //         interfaceInfoType: INTERFACEINFO,
-    //         classType: CLASS,
-    //         serviceConstructorParameters: (serviceProvider: IServiceProvider) => any[] = () => []
-    //     )
-    // {
-    //     const interfaceInfo = new interfaceInfoType();
-    //     this._registerService(
-    //         serviceType,
-    //         interfaceInfo.Identifier,
-    //         (serviceProvider) => new classType(...serviceConstructorParameters(serviceProvider))
-    //     );
-    // }
     Register(serviceType, interfaceInfoType, classType, constructor) {
         const interfaceInfo = new interfaceInfoType();
-        this._registerService(serviceType, interfaceInfo.Identifier, (serviceProvider) => constructor === undefined ? new classType() : constructor(classType, serviceProvider));
+        this._registerService(serviceType, interfaceInfo.Identifier, (serviceProvider, name) => constructor === undefined ? new classType() : constructor(classType, serviceProvider, name));
     }
-    // public RegisterTypedParameters<
-    //     INTERFACE,
-    //     INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>,
-    //     CLASS extends ServiceConstructor<INTERFACE>,
-    //     PARAMETERS extends any[]>
-    //     (
-    //         serviceType: ServiceType,
-    //         interfaceInfoType: INTERFACEINFO,
-    //         classType: ServiceConstructorTypedParameters<CLASS, PARAMETERS>,
-    //         serviceConstructorParameters: (serviceProvider: IServiceProvider) => PARAMETERS
-    //     ): void
-    // {
-    //     const interfaceInfo = new interfaceInfoType();
-    //     this._registerService(
-    //         serviceType,
-    //         interfaceInfo.Identifier,
-    //         (serviceProvider) => new classType(...serviceConstructorParameters(serviceProvider))
-    //     );
-    // }
     GetServiceProvider() {
         return this._mainScope;
     }

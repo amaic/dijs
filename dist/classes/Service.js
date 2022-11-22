@@ -45,7 +45,7 @@ class Service {
             case ServiceType_1.ServiceType.NamedScoped:
                 if (instanceName !== undefined) {
                     if (this._instances[instanceName] === undefined) {
-                        this._instances[instanceName] = this._serviceDescriptor.ServiceConstructor(this._serviceProvider);
+                        this._instances[instanceName] = this._serviceDescriptor.ServiceConstructor(this._serviceProvider, instanceName);
                     }
                     return this._instances[instanceName];
                 }

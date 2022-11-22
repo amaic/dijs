@@ -28,10 +28,10 @@ export default class ServiceCollection implements IServiceCollection
         return this._serviceDescriptors[serviceIdentifier];
     }
 
-    private _registerService<Interface, Class extends Interface>(
+    private _registerService<INTERFACE, CLASS extends INTERFACE>(
         serviceType: ServiceType,
         serviceIdentifier: symbol,
-        serviceConstructor: (serviceProvider: IServiceProvider) => Class
+        serviceConstructor: (serviceProvider: IServiceProvider, name?: string) => CLASS
     )
     {
         if (this._serviceDescriptors[serviceIdentifier] !== undefined)
@@ -44,11 +44,10 @@ export default class ServiceCollection implements IServiceCollection
         );
     }
 
-    public RegisterInstance<
-        INTERFACE,
-        INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>,
-        INSTANCE extends INTERFACE>
-        (interfaceInfoType: INTERFACEINFO, instance: INSTANCE): void
+    public RegisterInstance<INTERFACE, INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>, INSTANCE extends INTERFACE>(
+        interfaceInfoType: INTERFACEINFO,
+        instance: INSTANCE
+    ): void
     {
         const interfaceInfo = new interfaceInfoType();
 
@@ -59,59 +58,21 @@ export default class ServiceCollection implements IServiceCollection
         )
     }
 
-    // public Register<
-    //     INTERFACE,
-    //     INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>,
-    //     CLASS extends ServiceConstructor<INTERFACE>>
-    //     (
-    //         serviceType: ServiceType,
-    //         interfaceInfoType: INTERFACEINFO,
-    //         classType: CLASS,
-    //         serviceConstructorParameters: (serviceProvider: IServiceProvider) => any[] = () => []
-    //     )
-    // {
-    //     const interfaceInfo = new interfaceInfoType();
-
-    //     this._registerService(
-    //         serviceType,
-    //         interfaceInfo.Identifier,
-    //         (serviceProvider) => new classType(...serviceConstructorParameters(serviceProvider))
-    //     );
-    // }
-
-    public Register<INTERFACE, INTERFACEINFOTYPE extends InterfaceInfoConstructor<INTERFACE>, CLASSTYPE extends ServiceConstructor<INTERFACE>>(serviceType: ServiceType, interfaceInfoType: INTERFACEINFOTYPE, classType: CLASSTYPE, constructor?: (classType: CLASSTYPE, serviceProvider: IServiceProvider) => INTERFACE): void
+    public Register<INTERFACE, INTERFACEINFOTYPE extends InterfaceInfoConstructor<INTERFACE>, CLASSTYPE extends ServiceConstructor<INTERFACE>>(
+        serviceType: ServiceType,
+        interfaceInfoType: INTERFACEINFOTYPE,
+        classType: CLASSTYPE,
+        constructor?: (classType: CLASSTYPE, serviceProvider: IServiceProvider, name?: string) => INTERFACE
+    ): void
     {
         const interfaceInfo = new interfaceInfoType();
 
         this._registerService(
             serviceType,
             interfaceInfo.Identifier,
-            (serviceProvider) => constructor === undefined ? new classType() : constructor(classType, serviceProvider)
+            (serviceProvider, name) => constructor === undefined ? new classType() : constructor(classType, serviceProvider, name)
         );
     }
-
-    // public RegisterTypedParameters<
-    //     INTERFACE,
-    //     INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>,
-    //     CLASS extends ServiceConstructor<INTERFACE>,
-    //     PARAMETERS extends any[]>
-    //     (
-    //         serviceType: ServiceType,
-    //         interfaceInfoType: INTERFACEINFO,
-    //         classType: ServiceConstructorTypedParameters<CLASS, PARAMETERS>,
-    //         serviceConstructorParameters: (serviceProvider: IServiceProvider) => PARAMETERS
-    //     ): void
-    // {
-    //     const interfaceInfo = new interfaceInfoType();
-
-    //     this._registerService(
-    //         serviceType,
-    //         interfaceInfo.Identifier,
-    //         (serviceProvider) => new classType(...serviceConstructorParameters(serviceProvider))
-    //     );
-
-    // }
-
 
     public GetServiceProvider(): IServiceProvider
     {

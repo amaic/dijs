@@ -11,7 +11,7 @@ export default class ServiceCollection implements IServiceCollection {
     private _getServiceDescriptor;
     private _registerService;
     RegisterInstance<INTERFACE, INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>, INSTANCE extends INTERFACE>(interfaceInfoType: INTERFACEINFO, instance: INSTANCE): void;
-    Register<INTERFACE, INTERFACEINFOTYPE extends InterfaceInfoConstructor<INTERFACE>, CLASSTYPE extends ServiceConstructor<INTERFACE>>(serviceType: ServiceType, interfaceInfoType: INTERFACEINFOTYPE, classType: CLASSTYPE, constructor?: (classType: CLASSTYPE, serviceProvider: IServiceProvider) => INTERFACE): void;
+    Register<INTERFACE, INTERFACEINFOTYPE extends InterfaceInfoConstructor<INTERFACE>, CLASSTYPE extends ServiceConstructor<INTERFACE>>(serviceType: ServiceType, interfaceInfoType: INTERFACEINFOTYPE, classType: CLASSTYPE, constructor?: (classType: CLASSTYPE, serviceProvider: IServiceProvider, name?: string) => INTERFACE): void;
     GetServiceProvider(): IServiceProvider;
 }
 //# sourceMappingURL=ServiceCollection.d.ts.map
