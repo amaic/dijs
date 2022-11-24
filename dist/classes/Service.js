@@ -24,7 +24,8 @@ class Service {
                 instanceName = "";
                 break;
             case ServiceType_1.ServiceType.Named:
-            case ServiceType_1.ServiceType.NamedScoped:
+            case ServiceType_1.ServiceType.ScopedNamed:
+            case ServiceType_1.ServiceType.TransientNamed:
                 if (instanceName === undefined || instanceName.isEmptyOrWhitespace())
                     throw new InstanceNameMandatory_1.default(`Service is of type '${this._serviceDescriptor.ServiceType}' and parameter 'name' must not be null, empty or whitespace.`);
                 break;
@@ -34,6 +35,8 @@ class Service {
         switch (this._serviceDescriptor.ServiceType) {
             case ServiceType_1.ServiceType.Transient:
                 return this._serviceDescriptor.ServiceConstructor(this._serviceProvider);
+            case ServiceType_1.ServiceType.TransientNamed:
+                return this._serviceDescriptor.ServiceConstructor(this._serviceProvider, instanceName);
             case ServiceType_1.ServiceType.Instance:
             case ServiceType_1.ServiceType.Singleton:
             case ServiceType_1.ServiceType.Scoped:
@@ -42,7 +45,7 @@ class Service {
                 }
                 return this._instances[""];
             case ServiceType_1.ServiceType.Named:
-            case ServiceType_1.ServiceType.NamedScoped:
+            case ServiceType_1.ServiceType.ScopedNamed:
                 if (instanceName !== undefined) {
                     if (this._instances[instanceName] === undefined) {
                         this._instances[instanceName] = this._serviceDescriptor.ServiceConstructor(this._serviceProvider, instanceName);

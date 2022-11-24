@@ -39,7 +39,8 @@ export default class Service<CLASS>
                 break;
 
             case ServiceType.Named:
-            case ServiceType.NamedScoped:
+            case ServiceType.ScopedNamed:
+            case ServiceType.TransientNamed:
 
                 if (instanceName === undefined || instanceName.isEmptyOrWhitespace())
                     throw new InstanceNameMandatory(`Service is of type '${ this._serviceDescriptor.ServiceType }' and parameter 'name' must not be null, empty or whitespace.`);
@@ -56,6 +57,10 @@ export default class Service<CLASS>
 
                 return this._serviceDescriptor.ServiceConstructor(this._serviceProvider);
 
+            case ServiceType.TransientNamed:
+
+                return this._serviceDescriptor.ServiceConstructor(this._serviceProvider, instanceName);
+
             case ServiceType.Instance:
             case ServiceType.Singleton:
             case ServiceType.Scoped:
@@ -67,7 +72,7 @@ export default class Service<CLASS>
                 return this._instances[""];
 
             case ServiceType.Named:
-            case ServiceType.NamedScoped:
+            case ServiceType.ScopedNamed:
 
                 if (instanceName !== undefined)
                 {

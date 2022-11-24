@@ -140,7 +140,7 @@ describe("Service", () =>
         const sc = new ServiceCollection();
         const sp = sc.GetServiceProvider();
 
-        sc.Register<ITest1, typeof Test1_a>(ServiceType.NamedScoped, ITest1Identifier, Test1_a);
+        sc.Register<ITest1, typeof Test1_a>(ServiceType.ScopedNamed, ITest1Identifier, Test1_a);
 
         expect(() =>
         {

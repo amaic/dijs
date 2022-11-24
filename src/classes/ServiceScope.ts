@@ -39,6 +39,7 @@ export default class ServiceScope implements IServiceProvider
             case ServiceType.Singleton:
             case ServiceType.Named:
             case ServiceType.Transient:
+            case ServiceType.TransientNamed:
 
                 if (this._parentScope === null)
                 {
@@ -57,7 +58,7 @@ export default class ServiceScope implements IServiceProvider
                 }
 
             case ServiceType.Scoped:
-            case ServiceType.NamedScoped:
+            case ServiceType.ScopedNamed:
 
                 if (this._services[serviceDescriptor.ServiceIdentifier] === undefined)
                 {
@@ -84,7 +85,7 @@ export default class ServiceScope implements IServiceProvider
         switch (serviceDescriptor.ServiceType)
         {
             case ServiceType.Scoped:
-            case ServiceType.NamedScoped:
+            case ServiceType.ScopedNamed:
 
                 if (this.IsMainContext)
                 {

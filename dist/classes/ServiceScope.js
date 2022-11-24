@@ -25,6 +25,7 @@ class ServiceScope {
             case ServiceType_1.ServiceType.Singleton:
             case ServiceType_1.ServiceType.Named:
             case ServiceType_1.ServiceType.Transient:
+            case ServiceType_1.ServiceType.TransientNamed:
                 if (this._parentScope === null) {
                     if (this._services[serviceDescriptor.ServiceIdentifier] === undefined) {
                         this._services[serviceDescriptor.ServiceIdentifier] = new Service_1.default(this, serviceDescriptor);
@@ -35,7 +36,7 @@ class ServiceScope {
                     return this._parentScope._getService(serviceDescriptor);
                 }
             case ServiceType_1.ServiceType.Scoped:
-            case ServiceType_1.ServiceType.NamedScoped:
+            case ServiceType_1.ServiceType.ScopedNamed:
                 if (this._services[serviceDescriptor.ServiceIdentifier] === undefined) {
                     this._services[serviceDescriptor.ServiceIdentifier] = new Service_1.default(this, serviceDescriptor);
                 }
@@ -50,7 +51,7 @@ class ServiceScope {
             throw new UnknownServiceIdentifierError_1.default(`Service with identifier '${serviceIdentifier.description}' not found.`);
         switch (serviceDescriptor.ServiceType) {
             case ServiceType_1.ServiceType.Scoped:
-            case ServiceType_1.ServiceType.NamedScoped:
+            case ServiceType_1.ServiceType.ScopedNamed:
                 if (this.IsMainContext) {
                     throw new ScopedNotAllowedInMainContext_1.default(`Scoped service type '${serviceIdentifier.description}' not allowed in main context.`);
                 }

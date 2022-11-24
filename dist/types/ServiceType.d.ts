@@ -3,7 +3,8 @@ export declare enum ServiceType {
     Singleton = "singleton",
     Named = "named",
     Scoped = "scoped",
-    NamedScoped = "namedscoped",
-    Transient = "transient"
+    ScopedNamed = "scopednamed",
+    Transient = "transient",
+    TransientNamed = "transientnamed"
 }
 //# sourceMappingURL=ServiceType.d.ts.map

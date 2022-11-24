@@ -7,7 +7,8 @@ var ServiceType;
     ServiceType["Singleton"] = "singleton";
     ServiceType["Named"] = "named";
     ServiceType["Scoped"] = "scoped";
-    ServiceType["NamedScoped"] = "namedscoped";
+    ServiceType["ScopedNamed"] = "scopednamed";
     ServiceType["Transient"] = "transient";
+    ServiceType["TransientNamed"] = "transientnamed";
 })(ServiceType = exports.ServiceType || (exports.ServiceType = {}));
 //# sourceMappingURL=ServiceType.js.map
