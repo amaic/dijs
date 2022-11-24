@@ -6,10 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ScopedNotAllowedInMainContext_1 = __importDefault(require("../errors/ScopedNotAllowedInMainContext"));
 const UnknownOrUnsupportedServiceTypeError_1 = __importDefault(require("../errors/UnknownOrUnsupportedServiceTypeError"));
 const UnknownServiceIdentifierError_1 = __importDefault(require("../errors/UnknownServiceIdentifierError"));
+const IServiceProvider_1 = require("../interfaces/IServiceProvider");
 const ServiceType_1 = require("../types/ServiceType");
 const Service_1 = __importDefault(require("./Service"));
 class ServiceScope {
     constructor(parentScope, getServiceDescriptor) {
+        this.IServiceProvider = IServiceProvider_1.IServiceProviderIdentifier;
         this._services = {};
         this._parentScope = parentScope;
         this._getServiceDescriptor = getServiceDescriptor;
@@ -50,7 +52,7 @@ class ServiceScope {
             case ServiceType_1.ServiceType.Scoped:
             case ServiceType_1.ServiceType.NamedScoped:
                 if (this.IsMainContext) {
-                    throw new ScopedNotAllowedInMainContext_1.default();
+                    throw new ScopedNotAllowedInMainContext_1.default(`Scoped service type '${serviceIdentifier.description}' not allowed in main context.`);
                 }
                 break;
             default:

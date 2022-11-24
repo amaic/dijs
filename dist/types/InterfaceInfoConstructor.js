@@ -1,3 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+// import IInterfaceInfo from "../interfaces/IInterfaceInfo";
+// export type InterfaceInfoConstructor<INTERFACE> = { new(): IInterfaceInfo<INTERFACE> };
 //# sourceMappingURL=InterfaceInfoConstructor.js.map

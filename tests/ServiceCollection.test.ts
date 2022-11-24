@@ -1,6 +1,5 @@
 import ServiceCollection from '../src/classes/ServiceCollection'
-import IInterfaceInfo from '../src/interfaces/IInterfaceInfo';
-import IServiceCollection, { IServiceCollectionIdentifier, IServiceCollectionInfo } from '../src/interfaces/IServiceCollection';
+import IServiceCollection, { IServiceCollectionIdentifier } from '../src/interfaces/IServiceCollection';
 import { ServiceType } from '../src/types/ServiceType';
 
 describe("ServiceCollection", () =>
@@ -34,27 +33,21 @@ describe("ServiceCollection", () =>
             GetValue(): string;
         }
 
-        const ITestIdentitifier = Symbol("ITest1");
-
-        class ITest1Info implements IInterfaceInfo<ITest1>
-        {
-            Identifier: symbol = ITestIdentitifier;
-
-            ImplementsInterface(instance: any): instance is ITest1
-            {
-                return instance.ITest1 === ITestIdentitifier;
-            }
-
-        }
+        const ITest1Identifier = Symbol("ITest1");
 
         class Test1 implements ITest1
         {
-            readonly ITest1: symbol = ITestIdentitifier;
+            readonly ITest1: symbol = ITest1Identifier;
 
             GetValue(): string
             {
                 return "Test1";
             }
+        }
+
+        function IsITest1(instance: any): instance is ITest1
+        {
+            return instance?.ITest1 === ITest1Identifier;
         }
 
 
@@ -63,13 +56,11 @@ describe("ServiceCollection", () =>
         const serviceProvider = serviceCollection.GetServiceProvider();
 
 
-        serviceCollection.Register<ITest1, typeof ITest1Info, typeof Test1>(ServiceType.Singleton, ITest1Info, Test1);
+        serviceCollection.Register<ITest1, typeof Test1>(ServiceType.Singleton, ITest1Identifier, Test1);
 
-        const test1 = serviceProvider.GetService<ITest1>(ITestIdentitifier);
+        const test1 = serviceProvider.GetService<ITest1>(ITest1Identifier);
 
-        const test1Info = new ITest1Info();
+        expect(IsITest1(test1)).toBeTruthy();
 
-        expect(test1Info.ImplementsInterface(test1)).toBeTruthy();
-        
     });
 });

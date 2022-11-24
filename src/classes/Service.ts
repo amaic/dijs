@@ -6,11 +6,11 @@ import InstanceNameNotAvailableError from "../errors/InstanceNameNotAvailableErr
 import InstanceNameMandatory from "../errors/InstanceNameMandatory";
 import UnknownServiceIdentifierError from "../errors/UnknownServiceIdentifierError";
 
-export default class Service<Class>
+export default class Service<CLASS>
 {
     constructor(
         serviceProvider: IServiceProvider,
-        serviceDescriptor: ServiceDescriptor<Class>
+        serviceDescriptor: ServiceDescriptor<CLASS>
     )
     {
         this._serviceProvider = serviceProvider;
@@ -19,11 +19,11 @@ export default class Service<Class>
 
     private readonly _serviceProvider: IServiceProvider;
 
-    private readonly _serviceDescriptor: ServiceDescriptor<Class>;
+    private readonly _serviceDescriptor: ServiceDescriptor<CLASS>;
 
-    private readonly _instances: StringKeyDictionary<Class> = {};
+    private readonly _instances: StringKeyDictionary<CLASS> = {};
 
-    public GetInstance(instanceName?: string): Class
+    public GetInstance(instanceName?: string): CLASS
     {
         switch (this._serviceDescriptor.ServiceType)
         {

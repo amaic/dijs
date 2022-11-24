@@ -1,15 +1,16 @@
 import ScopedNotAllowedInMainContext from "../errors/ScopedNotAllowedInMainContext";
 import UnknownOrUnsupportedServiceTypeError from "../errors/UnknownOrUnsupportedServiceTypeError";
 import UnknownServiceIdentifierError from "../errors/UnknownServiceIdentifierError";
-import IServiceProvider from "../interfaces/IServiceProvider";
+import IServiceProvider, { IServiceProviderIdentifier } from "../interfaces/IServiceProvider";
 import { SymbolKeyDictionary } from "../types/Dictionary";
-import { InterfaceInfoConstructor } from "../types/InterfaceInfoConstructor";
 import { ServiceType } from "../types/ServiceType";
 import Service from "./Service";
 import ServiceDescriptor from "./ServiceDescriptor";
 
 export default class ServiceScope implements IServiceProvider
 {
+    IServiceProvider: symbol = IServiceProviderIdentifier;
+
     constructor(
         parentScope: ServiceScope | null,
         getServiceDescriptor: (serviceIdentifier: symbol) => ServiceDescriptor<any> | undefined
@@ -84,10 +85,10 @@ export default class ServiceScope implements IServiceProvider
         {
             case ServiceType.Scoped:
             case ServiceType.NamedScoped:
-                
+
                 if (this.IsMainContext)
                 {
-                    throw new ScopedNotAllowedInMainContext();
+                    throw new ScopedNotAllowedInMainContext(`Scoped service type '${ serviceIdentifier.description }' not allowed in main context.`);
                 }
                 break;
 

@@ -1,29 +1,43 @@
-import { ServiceCollection } from '../src';
-import { ServiceConstructor } from '../src/types/ServiceConstructor';
-
 describe("Dummy", () =>
 {
     test("dummy", () =>
     {
-        const test1Instance = Create<Test1, typeof Test1>(Test1, (classType) => new classType("abc", 123, true));
+        interface ITest1
+        {
+            Prop1: string;
+            get Getter1(): string;
+            Method1(param1: string, param2: number): boolean;
+            Prop2: Date;
+        }
+
+        class Test1 implements ITest1
+        {
+            Prop1: string;
+            get Getter1(): string
+            {
+                throw new Error("Method not implemented.");
+            }
+            Method1(param1: string, param2: number): boolean
+            {
+                throw new Error("Method not implemented.");
+            }
+            Prop2: Date;
+
+        }
+
+        class Test2 
+        {
+            Method1(): void { }
+            get Getter1(): string
+            {
+                throw new Error("Method not implemented.");
+            }
+        }
+
+        type ITest1Type = keyof ITest1;
+
+        let x: ITest1Type = "Getter1";
 
     });
 });
 
-function Create<CLASS, CLASSTYPE extends ServiceConstructor<CLASS>>
-    (
-        classType: CLASSTYPE,
-        create: (classType: CLASSTYPE) => CLASS
-    ): CLASS
-{
-    return create(classType);
-}
-
-
-class Test1
-{
-    constructor(public param1: string, public param2: number, public param3: boolean)
-    {
-
-    }
-}

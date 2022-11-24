@@ -1,12 +1,11 @@
-import IServiceCollection, { IServiceCollectionIdentifier, IServiceCollectionInfo } from "../interfaces/IServiceCollection";
-import { ServiceConstructor, ServiceConstructorTypedParameters } from "../types/ServiceConstructor";
+import IServiceCollection, { IServiceCollectionIdentifier } from "../interfaces/IServiceCollection";
+import { ServiceConstructor } from "../types/ServiceConstructor";
 import { SymbolKeyDictionary } from "../types/Dictionary";
 import { ServiceType } from "../types/ServiceType";
 import ServiceDescriptor from "./ServiceDescriptor";
 import IServiceProvider from "../interfaces/IServiceProvider";
 import ServiceScope from "./ServiceScope";
 import ServiceIdentifierAlreadyInUseError from "../errors/ServiceIdentifierAlreadyInUseError";
-import { InterfaceInfoConstructor } from "../types/InterfaceInfoConstructor";
 
 export default class ServiceCollection implements IServiceCollection
 {
@@ -16,7 +15,7 @@ export default class ServiceCollection implements IServiceCollection
     {
         this._mainScope = new ServiceScope(null, this._getServiceDescriptor.bind(this));
 
-        this.RegisterInstance<IServiceCollection, typeof IServiceCollectionInfo, ServiceCollection>(IServiceCollectionInfo, this);
+        this.RegisterInstance<IServiceCollection, ServiceCollection>(IServiceCollectionIdentifier, this);
     }
 
     private readonly _serviceDescriptors: SymbolKeyDictionary<ServiceDescriptor<any>> = {};
@@ -44,32 +43,28 @@ export default class ServiceCollection implements IServiceCollection
         );
     }
 
-    public RegisterInstance<INTERFACE, INTERFACEINFO extends InterfaceInfoConstructor<INTERFACE>, INSTANCE extends INTERFACE>(
-        interfaceInfoType: INTERFACEINFO,
+    public RegisterInstance<INTERFACE, INSTANCE extends INTERFACE>(
+        interfaceIdentifier: symbol,
         instance: INSTANCE
     ): void
     {
-        const interfaceInfo = new interfaceInfoType();
-
         this._registerService(
             ServiceType.Instance,
-            interfaceInfo.Identifier,
+            interfaceIdentifier,
             () => instance
         )
     }
 
-    public Register<INTERFACE, INTERFACEINFOTYPE extends InterfaceInfoConstructor<INTERFACE>, CLASSTYPE extends ServiceConstructor<INTERFACE>>(
+    public Register<INTERFACE, CLASSTYPE extends ServiceConstructor<INTERFACE>>(
         serviceType: ServiceType,
-        interfaceInfoType: INTERFACEINFOTYPE,
+        interfaceIdentifier: symbol,
         classType: CLASSTYPE,
         constructor?: (classType: CLASSTYPE, serviceProvider: IServiceProvider, name?: string) => INTERFACE
     ): void
     {
-        const interfaceInfo = new interfaceInfoType();
-
         this._registerService(
             serviceType,
-            interfaceInfo.Identifier,
+            interfaceIdentifier,
             (serviceProvider, name) => constructor === undefined ? new classType() : constructor(classType, serviceProvider, name)
         );
     }

@@ -1,1 +1,1 @@
-{"version":3,"file":"IServiceProvider.js","sourceRoot":"","sources":["../../src/interfaces/IServiceProvider.ts"],"names":[],"mappings":""}
+{"version":3,"file":"IServiceProvider.js","sourceRoot":"","sources":["../../src/interfaces/IServiceProvider.ts"],"names":[],"mappings":";;;AAaa,QAAA,0BAA0B,GAAG,MAAM,CAAC,kBAAkB,CAAC,CAAC;AAErE,SAAgB,kBAAkB,CAAC,QAAa;IAE5C,OAAO,CAAA,QAAQ,aAAR,QAAQ,uBAAR,QAAQ,CAAE,gBAAgB,MAAK,kCAA0B,CAAC;AACrE,CAAC;AAHD,gDAGC"}

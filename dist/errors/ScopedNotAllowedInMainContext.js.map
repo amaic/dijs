@@ -1,1 +1,1 @@
-{"version":3,"file":"ScopedNotAllowedInMainContext.js","sourceRoot":"","sources":["../../src/errors/ScopedNotAllowedInMainContext.ts"],"names":[],"mappings":";;AAAA,MAAqB,6BAA8B,SAAQ,KAAK;IAE5D,YAAY,UAAiB,kDAAkD;QAE3E,KAAK,CAAC,OAAO,CAAC,CAAC;IACnB,CAAC;CACJ;AAND,gDAMC"}
+{"version":3,"file":"ScopedNotAllowedInMainContext.js","sourceRoot":"","sources":["../../src/errors/ScopedNotAllowedInMainContext.ts"],"names":[],"mappings":";;AAAA,MAAqB,6BAA8B,SAAQ,KAAK;IAE5D,YAAY,UAAkB,kDAAkD;QAE5E,KAAK,CAAC,OAAO,CAAC,CAAC;IACnB,CAAC;CACJ;AAND,gDAMC"}

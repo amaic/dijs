@@ -1,23 +1,23 @@
 import { ServiceConstructor, ServiceConstructorTypedParameters } from "../types/ServiceConstructor";
 import { ServiceType } from "../types/ServiceType";
 import IServiceProvider from "./IServiceProvider";
-import IInterfaceInfo from "./IInterfaceInfo";
-import { InterfaceInfoConstructor } from "../types/InterfaceInfoConstructor";
+// import IInterfaceInfo from "./IInterfaceInfo";
+// import { InterfaceInfoConstructor } from "../types/InterfaceInfoConstructor";
 
 export default interface IServiceCollection
 {
     IServiceCollection: symbol;
 
-    RegisterInstance<INTERFACE, INTERFACEINFOTYPE extends InterfaceInfoConstructor<INTERFACE>, INSTANCE extends INTERFACE>
+    RegisterInstance<INTERFACE, INSTANCE extends INTERFACE>
         (
-            interfaceInfoType: INTERFACEINFOTYPE,
+            interfaceIdentifier: symbol,
             instance: INSTANCE
         ): void;
 
-    Register<INTERFACE, INTERFACEINFOTYPE extends InterfaceInfoConstructor<INTERFACE>, CLASSTYPE extends ServiceConstructor<INTERFACE>>
+    Register<INTERFACE, CLASSTYPE extends ServiceConstructor<INTERFACE>>
         (
             serviceType: ServiceType,
-            interfaceInfoType: INTERFACEINFOTYPE,
+            interfaceIdentifier: symbol,
             classType: CLASSTYPE,
             constructor?: (classType: CLASSTYPE, serviceProvider: IServiceProvider, instanceName?: string) => INTERFACE
         ): void;
@@ -28,13 +28,7 @@ export default interface IServiceCollection
 
 export const IServiceCollectionIdentifier = Symbol("IServiceCollection");
 
-export class IServiceCollectionInfo implements IInterfaceInfo<IServiceCollection>
+export function IsIServiceCollection(instance: any): instance is IServiceCollection
 {
-    readonly Identifier: symbol = IServiceCollectionIdentifier;
-
-    ImplementsInterface(instance: any): instance is IServiceCollection
-    {
-        return instance?.IServiceCollection === IServiceCollectionIdentifier;
-    }
-
+    return instance?.IServiceCollection === IServiceCollectionIdentifier;
 }

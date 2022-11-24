@@ -1,6 +1,7 @@
 import IServiceProvider from "../interfaces/IServiceProvider";
 import ServiceDescriptor from "./ServiceDescriptor";
 export default class ServiceScope implements IServiceProvider {
+    IServiceProvider: symbol;
     constructor(parentScope: ServiceScope | null, getServiceDescriptor: (serviceIdentifier: symbol) => ServiceDescriptor<any> | undefined);
     private readonly _parentScope;
     private readonly _getServiceDescriptor;

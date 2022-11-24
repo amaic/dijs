@@ -1,3 +1,3 @@
-import IInterfaceInfo from "../interfaces/IInterfaceInfo";
+// import IInterfaceInfo from "../interfaces/IInterfaceInfo";
 
-export type InterfaceInfoConstructor<INTERFACE> = { new(): IInterfaceInfo<INTERFACE> };
+// export type InterfaceInfoConstructor<INTERFACE> = { new(): IInterfaceInfo<INTERFACE> };

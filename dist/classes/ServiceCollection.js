@@ -13,7 +13,7 @@ class ServiceCollection {
         this.IServiceCollection = IServiceCollection_1.IServiceCollectionIdentifier;
         this._serviceDescriptors = {};
         this._mainScope = new ServiceScope_1.default(null, this._getServiceDescriptor.bind(this));
-        this.RegisterInstance(IServiceCollection_1.IServiceCollectionInfo, this);
+        this.RegisterInstance(IServiceCollection_1.IServiceCollectionIdentifier, this);
     }
     _getServiceDescriptor(serviceIdentifier) {
         return this._serviceDescriptors[serviceIdentifier];
@@ -23,13 +23,11 @@ class ServiceCollection {
             throw new ServiceIdentifierAlreadyInUseError_1.default(`Service with identifier '${serviceIdentifier.description}' already registered.`);
         this._serviceDescriptors[serviceIdentifier] = new ServiceDescriptor_1.default(serviceIdentifier, serviceType, serviceConstructor);
     }
-    RegisterInstance(interfaceInfoType, instance) {
-        const interfaceInfo = new interfaceInfoType();
-        this._registerService(ServiceType_1.ServiceType.Instance, interfaceInfo.Identifier, () => instance);
+    RegisterInstance(interfaceIdentifier, instance) {
+        this._registerService(ServiceType_1.ServiceType.Instance, interfaceIdentifier, () => instance);
     }
-    Register(serviceType, interfaceInfoType, classType, constructor) {
-        const interfaceInfo = new interfaceInfoType();
-        this._registerService(serviceType, interfaceInfo.Identifier, (serviceProvider, name) => constructor === undefined ? new classType() : constructor(classType, serviceProvider, name));
+    Register(serviceType, interfaceIdentifier, classType, constructor) {
+        this._registerService(serviceType, interfaceIdentifier, (serviceProvider, name) => constructor === undefined ? new classType() : constructor(classType, serviceProvider, name));
     }
     GetServiceProvider() {
         return this._mainScope;
