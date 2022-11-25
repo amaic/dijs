@@ -55,7 +55,7 @@ export default class ServiceCollection implements IServiceCollection
         )
     }
 
-    public Register<INTERFACE, CLASSTYPE extends ServiceConstructor<INTERFACE>>(
+    public RegisterConstructor<INTERFACE, CLASSTYPE extends ServiceConstructor<INTERFACE>>(
         serviceType: ServiceType,
         interfaceIdentifier: symbol,
         classType: CLASSTYPE,
@@ -66,6 +66,19 @@ export default class ServiceCollection implements IServiceCollection
             serviceType,
             interfaceIdentifier,
             (serviceProvider, name) => constructor === undefined ? new classType() : constructor(classType, serviceProvider, name)
+        );
+    }
+
+    public RegisterFactory<INTERFACE>(
+        serviceType: ServiceType,
+        interfaceIdentifier: symbol,
+        factory: (serviceProvider: IServiceProvider, name?: string) => INTERFACE
+    ): void
+    {
+        this._registerService(
+            serviceType,
+            interfaceIdentifier,
+            (serviceProvider, name) => factory(serviceProvider, name)
         );
     }
 

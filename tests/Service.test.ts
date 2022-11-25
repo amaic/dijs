@@ -11,7 +11,7 @@ describe("Service", () =>
         const sc = new ServiceCollection();
         const sp = sc.GetServiceProvider();
 
-        sc.Register<ITest1, typeof Test1_a>(ServiceType.Singleton, ITest1Identifier, Test1_a);
+        sc.RegisterConstructor<ITest1, typeof Test1_a>(ServiceType.Singleton, ITest1Identifier, Test1_a);
 
         const test1_a_a = sp.GetService(ITest1Identifier);
 
@@ -24,11 +24,11 @@ describe("Service", () =>
         const sc = new ServiceCollection();
         const sp = sc.GetServiceProvider();
 
-        sc.Register<ITest1, typeof Test1_a>(ServiceType.Singleton, ITest1Identifier, Test1_a);
+        sc.RegisterConstructor<ITest1, typeof Test1_a>(ServiceType.Singleton, ITest1Identifier, Test1_a);
 
         expect(() =>
         {
-            sc.Register<ITest1, typeof Test1_a>(ServiceType.Singleton, ITest1Identifier, Test1_a);
+            sc.RegisterConstructor<ITest1, typeof Test1_a>(ServiceType.Singleton, ITest1Identifier, Test1_a);
         })
             .toThrowError(ServiceIdentifierAlreadyInUseError);
     });
@@ -38,8 +38,8 @@ describe("Service", () =>
         const sc = new ServiceCollection();
         const sp = sc.GetServiceProvider();
 
-        sc.Register<ITest1, typeof Test1_a>(ServiceType.Singleton, ITest1Identifier, Test1_a);
-        sc.Register<ITest2, typeof Test2_a>(ServiceType.Singleton, ITest2Identifier, Test2_a);
+        sc.RegisterConstructor<ITest1, typeof Test1_a>(ServiceType.Singleton, ITest1Identifier, Test1_a);
+        sc.RegisterConstructor<ITest2, typeof Test2_a>(ServiceType.Singleton, ITest2Identifier, Test2_a);
 
         const test1_a_a = sp.GetService(ITest1Identifier);
         const test2_a_a = sp.GetService(ITest2Identifier);
@@ -60,7 +60,7 @@ describe("Service", () =>
         const sc = new ServiceCollection();
         const sp = sc.GetServiceProvider();
 
-        sc.Register<ITest1, typeof Test1_a>(ServiceType.Scoped, ITest1Identifier, Test1_a);
+        sc.RegisterConstructor<ITest1, typeof Test1_a>(ServiceType.Scoped, ITest1Identifier, Test1_a);
 
         expect(() =>
         {
@@ -74,7 +74,7 @@ describe("Service", () =>
         const sc = new ServiceCollection();
         const sp = sc.GetServiceProvider();
 
-        sc.Register<ITest1, typeof Test1_a>(ServiceType.Scoped, ITest1Identifier, Test1_a);
+        sc.RegisterConstructor<ITest1, typeof Test1_a>(ServiceType.Scoped, ITest1Identifier, Test1_a);
 
         const scopeContext1 = sp.CreateScope();
         const scopeContext2 = sp.CreateScope();
@@ -101,7 +101,7 @@ describe("Service", () =>
         const sc = new ServiceCollection();
         const sp = sc.GetServiceProvider();
 
-        sc.Register<ITest1, typeof Test1_a>(ServiceType.Transient, ITest1Identifier, Test1_a);
+        sc.RegisterConstructor<ITest1, typeof Test1_a>(ServiceType.Transient, ITest1Identifier, Test1_a);
 
         const test1_a_1 = sp.GetService(ITest1Identifier);
         const test1_a_2 = sp.GetService(ITest1Identifier);
@@ -121,7 +121,7 @@ describe("Service", () =>
         const sc = new ServiceCollection();
         const sp = sc.GetServiceProvider();
 
-        sc.Register<ITest1, typeof Test1_a>(ServiceType.Named, ITest1Identifier, Test1_a);
+        sc.RegisterConstructor<ITest1, typeof Test1_a>(ServiceType.Named, ITest1Identifier, Test1_a);
 
         const test1_a_1_name1 = sp.GetService(ITest1Identifier, "name1");
         const test1_a_2_name1 = sp.GetService(ITest1Identifier, "name1");
@@ -140,7 +140,7 @@ describe("Service", () =>
         const sc = new ServiceCollection();
         const sp = sc.GetServiceProvider();
 
-        sc.Register<ITest1, typeof Test1_a>(ServiceType.ScopedNamed, ITest1Identifier, Test1_a);
+        sc.RegisterConstructor<ITest1, typeof Test1_a>(ServiceType.ScopedNamed, ITest1Identifier, Test1_a);
 
         expect(() =>
         {
@@ -171,22 +171,22 @@ describe("Service", () =>
         const sc = new ServiceCollection();
         const sp = sc.GetServiceProvider();
 
-        sc.Register<ITest1, typeof Test1_a>(
+        sc.RegisterConstructor<ITest1, typeof Test1_a>(
             ServiceType.Transient, ITest1Identifier, Test1_a
         );
 
-        sc.Register<ITest2, typeof Test2_a>(
+        sc.RegisterConstructor<ITest2, typeof Test2_a>(
             ServiceType.Transient, ITest2Identifier, Test2_a
         );
 
-        sc.Register<ITest3, typeof Test3_a>(
+        sc.RegisterConstructor<ITest3, typeof Test3_a>(
             ServiceType.Scoped, ITest3Identifier, Test3_a, (classType, serviceProvider) => new classType(
                 serviceProvider.GetService(ITest1Identifier),
                 serviceProvider.GetService(ITest2Identifier)
             )
         );
 
-        sc.Register<ITest4, typeof Test4_a>(
+        sc.RegisterConstructor<ITest4, typeof Test4_a>(
             ServiceType.Singleton, ITest4Identifier, Test4_a, (classType, serviceProvider) => new classType(
                 serviceProvider.GetService(ITest3Identifier)
             )

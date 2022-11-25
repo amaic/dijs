@@ -4,7 +4,8 @@ import IServiceProvider from "./IServiceProvider";
 export default interface IServiceCollection {
     IServiceCollection: symbol;
     RegisterInstance<INTERFACE, INSTANCE extends INTERFACE>(interfaceIdentifier: symbol, instance: INSTANCE): void;
-    Register<INTERFACE, CLASSTYPE extends ServiceConstructor<INTERFACE>>(serviceType: ServiceType, interfaceIdentifier: symbol, classType: CLASSTYPE, constructor?: (classType: CLASSTYPE, serviceProvider: IServiceProvider, instanceName?: string) => INTERFACE): void;
+    RegisterFactory<INTERFACE>(serviceType: ServiceType, interfaceIdentifier: symbol, factory: (serviceProvider: IServiceProvider, name?: string) => INTERFACE): void;
+    RegisterConstructor<INTERFACE, CLASSTYPE extends ServiceConstructor<INTERFACE>>(serviceType: ServiceType, interfaceIdentifier: symbol, classType: CLASSTYPE, constructor?: (classType: CLASSTYPE, serviceProvider: IServiceProvider, instanceName?: string) => INTERFACE): void;
     GetServiceProvider(): IServiceProvider;
 }
 export declare const IServiceCollectionIdentifier: unique symbol;

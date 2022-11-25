@@ -1,8 +1,6 @@
 import { ServiceConstructor, ServiceConstructorTypedParameters } from "../types/ServiceConstructor";
 import { ServiceType } from "../types/ServiceType";
 import IServiceProvider from "./IServiceProvider";
-// import IInterfaceInfo from "./IInterfaceInfo";
-// import { InterfaceInfoConstructor } from "../types/InterfaceInfoConstructor";
 
 export default interface IServiceCollection
 {
@@ -14,7 +12,14 @@ export default interface IServiceCollection
             instance: INSTANCE
         ): void;
 
-    Register<INTERFACE, CLASSTYPE extends ServiceConstructor<INTERFACE>>
+    RegisterFactory<INTERFACE>
+        (
+            serviceType: ServiceType,
+            interfaceIdentifier: symbol,
+            factory: (serviceProvider: IServiceProvider, name?: string) => INTERFACE
+        ): void
+
+    RegisterConstructor<INTERFACE, CLASSTYPE extends ServiceConstructor<INTERFACE>>
         (
             serviceType: ServiceType,
             interfaceIdentifier: symbol,

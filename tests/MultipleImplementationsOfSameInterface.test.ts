@@ -1,100 +1,94 @@
-import { CLASS_TYPES } from '@babel/types';
 import { ServiceCollection } from '../src';
 import IServiceProvider from '../src/interfaces/IServiceProvider';
 import { ServiceType } from '../src/types/ServiceType';
 
 describe("Multiple implementations of the same interface.", () =>
 {
-    test("Example1: factory", () =>
+    test("Example1: with RegisterFactory and service type Named", () =>
     {
-        enum MathOperationType
-        {
-            Add = 0,
-            Subtract = 1,
-            Multiply = 2,
-            Divide = 3
-        }
+        const sc = new ServiceCollection();
 
-        class OperationRequest
-        {
-            private _OperationType: MathOperationType;
-            public get OperationType(): MathOperationType
+        sc.RegisterFactory<IInterface1>(ServiceType.Named, IInterface1Identifier, 
+            (sp, name) =>
             {
-                return this._OperationType;
-            }
-            public set OperationType(value: MathOperationType)
-            {
-                this._OperationType = value;
-            }
-        }
+                switch(name)
+                {
+                    case 'A': return new ImplementationA();
+                    case 'B': return new ImplementationB();
+                    case 'C': return new ImplementationC();
+                    case 'D': return new ImplementationD();
 
-        interface IMathOperationRepository
-        {
-            PerformOperation(opRequest: OperationRequest): number;
-        }
+                    default:
+                        throw new Error("Unknown implementation");
+                }
+            });
 
-        const AddOperationRepositoryIdentifier = Symbol();
-        class AddOperationRepository implements IMathOperationRepository
-        {
-            PerformOperation(opRequest: OperationRequest): number
-            {
-                throw new Error('Method not implemented.');
-            }
+        const sp = sc.GetServiceProvider();
 
-        }
-        const SubtractOperationRepositoryIdentifier = Symbol();
-        class SubtractOperationRepository implements IMathOperationRepository
-        {
-            PerformOperation(opRequest: OperationRequest): number
-            {
-                throw new Error('Method not implemented.');
-            }
+        const implementationC = sp.GetService<IInterface1>(IInterface1Identifier, 'C');
 
-        }
-        const MultiplyOperationRepositoryIdentifier = Symbol();
-        class MultiplyOperationRepository implements IMathOperationRepository
-        {
-            PerformOperation(opRequest: OperationRequest): number
-            {
-                throw new Error('Method not implemented.');
-            }
+        expect(implementationC).toBeInstanceOf(ImplementationC);
+        expect(implementationC.DoSomething()).toBe("ImplementationC");
+    });
 
-        }
-        const DivideOperationRepositoryIdentifier = Symbol();
-        class DivideOperationRepository implements IMathOperationRepository
-        {
-            PerformOperation(opRequest: OperationRequest): number
-            {
-                throw new Error('Method not implemented.');
-            }
 
-        }
+    test("Example2: with RegisterConstructor and different identifiers", () =>
+    {
+        const ServiceIdentifier_A = Symbol();
+        const ServiceIdentifier_B = Symbol();
+        const ServiceIdentifier_C = Symbol();
+        const ServiceIdentifier_D = Symbol();
 
-        const IMathOperationRepositoryFactoryIdentifier = Symbol();
-        interface IMathOperationRepositoryFactory
+        const sc = new ServiceCollection();
+
+        sc.RegisterConstructor<IInterface1, typeof ImplementationA>(ServiceType.Transient, ServiceIdentifier_A, ImplementationA);
+        sc.RegisterConstructor<IInterface1, typeof ImplementationB>(ServiceType.Transient, ServiceIdentifier_B, ImplementationB);
+        sc.RegisterConstructor<IInterface1, typeof ImplementationC>(ServiceType.Transient, ServiceIdentifier_C, ImplementationC);
+        sc.RegisterConstructor<IInterface1, typeof ImplementationD>(ServiceType.Transient, ServiceIdentifier_D, ImplementationC);
+
+        const sp = sc.GetServiceProvider();
+
+        const implementationC = sp.GetService<IInterface1>(ServiceIdentifier_C);
+
+        expect(implementationC).toBeInstanceOf(ImplementationC);
+        expect(implementationC.DoSomething()).toBe("ImplementationC");
+    });
+
+    test("Example3: with explicit factory class", () =>
+    {
+        const IFactoryIdentifier = Symbol();
+        interface IFactory
         {
-            GetRepository(mathOperationType: MathOperationType): IMathOperationRepository;
+            IFactory: symbol;
+
+            GetImplementation(implementationType: ImplementationType): IInterface1;
         }
-        class MathOperationRepositoryFactory implements IMathOperationRepositoryFactory
+        class Factory implements IFactory
         {
+            IFactory: symbol = IFactoryIdentifier;
+
             constructor(private serviceProvider: IServiceProvider)
             {
             }
 
-            GetRepository(mathOperationType: MathOperationType): IMathOperationRepository
+            GetImplementation(implementationType: ImplementationType): IInterface1
             {
-                switch (mathOperationType)
+                switch (implementationType)
                 {
-                    case MathOperationType.Add:
-                        return this.serviceProvider.GetService(AddOperationRepositoryIdentifier);
-                    case MathOperationType.Subtract:
-                        return this.serviceProvider.GetService(SubtractOperationRepositoryIdentifier);
-                    case MathOperationType.Multiply:
-                        return this.serviceProvider.GetService(MultiplyOperationRepositoryIdentifier);
-                    case MathOperationType.Divide:
-                        return this.serviceProvider.GetService(DivideOperationRepositoryIdentifier);
+                    case ImplementationType.A:
+                        return this.serviceProvider.GetService(ImplementationAIdentifier);
+
+                    case ImplementationType.B:
+                        return this.serviceProvider.GetService(ImplementationBIdentifier);
+
+                    case ImplementationType.C:
+                        return this.serviceProvider.GetService(ImplementationCIdentifier);
+
+                    case ImplementationType.D:
+                        return this.serviceProvider.GetService(ImplementationDIdentifier);
+
                     default:
-                        throw new Error("KeyNotFoundException");
+                        throw new Error("implementation type not found");
                 }
             }
         }
@@ -102,21 +96,81 @@ describe("Multiple implementations of the same interface.", () =>
 
         const sc = new ServiceCollection();
 
-        sc.Register<AddOperationRepository, typeof AddOperationRepository>(ServiceType.Transient, AddOperationRepositoryIdentifier, AddOperationRepository);
-        sc.Register<SubtractOperationRepository, typeof SubtractOperationRepository>(ServiceType.Transient, SubtractOperationRepositoryIdentifier, SubtractOperationRepository);
-        sc.Register<MultiplyOperationRepository, typeof MultiplyOperationRepository>(ServiceType.Transient, MultiplyOperationRepositoryIdentifier, MultiplyOperationRepository);
-        sc.Register<DivideOperationRepository, typeof DivideOperationRepository>(ServiceType.Transient, DivideOperationRepositoryIdentifier, DivideOperationRepository);
+        sc.RegisterConstructor<ImplementationA, typeof ImplementationA>(ServiceType.Transient, ImplementationAIdentifier, ImplementationA);
+        sc.RegisterConstructor<ImplementationB, typeof ImplementationB>(ServiceType.Transient, ImplementationBIdentifier, ImplementationB);
+        sc.RegisterConstructor<ImplementationC, typeof ImplementationC>(ServiceType.Transient, ImplementationCIdentifier, ImplementationC);
+        sc.RegisterConstructor(ServiceType.Transient, ImplementationDIdentifier, ImplementationD);
 
-        sc.Register<IMathOperationRepositoryFactory, typeof MathOperationRepositoryFactory>(ServiceType.Transient, IMathOperationRepositoryFactoryIdentifier, MathOperationRepositoryFactory, (classType, sp) =>
+        sc.RegisterConstructor<IFactory, typeof Factory>(ServiceType.Transient, IFactoryIdentifier, Factory, (classType, sp) =>
             new classType(sp)
         );
 
         const sp = sc.GetServiceProvider();
 
-        const factory = sp.GetService<IMathOperationRepositoryFactory>(IMathOperationRepositoryFactoryIdentifier);
+        const factory = sp.GetService<IFactory>(IFactoryIdentifier);
 
-        const multiply = factory.GetRepository(MathOperationType.Multiply);
+        const implementationC = factory.GetImplementation(ImplementationType.C);
+        expect(implementationC).toBeInstanceOf(ImplementationC);
+        expect(implementationC.DoSomething()).toBe("ImplementationC");
 
-
+        const implementationD = factory.GetImplementation(ImplementationType.D);
+        expect(implementationD).toBeInstanceOf(ImplementationD);
+        expect(implementationD.DoSomething()).toBe("ImplementationD");
     });
 });
+
+const IInterface1Identifier = Symbol();
+interface IInterface1
+{
+    IInterface1: symbol;
+    DoSomething(): string;
+}
+
+enum ImplementationType
+{
+    A, B, C, D
+}
+
+const ImplementationAIdentifier = Symbol();
+class ImplementationA implements IInterface1
+{
+    IInterface1: symbol = IInterface1Identifier;
+
+    DoSomething(): string
+    {
+        return "ImplementationA";
+    }
+}
+
+const ImplementationBIdentifier = Symbol();
+class ImplementationB implements IInterface1
+{
+    IInterface1: symbol = IInterface1Identifier;
+
+    DoSomething(): string
+    {
+        return "ImplementationB";
+    }
+}
+
+const ImplementationCIdentifier = Symbol();
+class ImplementationC implements IInterface1
+{
+    IInterface1: symbol = IInterface1Identifier;
+
+    DoSomething(): string
+    {
+        return "ImplementationC";
+    }
+}
+
+const ImplementationDIdentifier = Symbol();
+class ImplementationD implements IInterface1
+{
+    IInterface1: symbol = IInterface1Identifier;
+
+    DoSomething(): string
+    {
+        return "ImplementationD";
+    }
+}

@@ -15,11 +15,12 @@ describe("Integration", () =>
 
 function registerServices(sc: IServiceCollection)
 {
-    sc.Register<IServiceA, typeof ServiceA>(ServiceType.Singleton, IServiceAIdentifier, ServiceA);
-    sc.Register<IServiceB, typeof ServiceB>(ServiceType.Scoped, IServiceBIdentifier, ServiceB);
-    sc.Register<IServiceC, typeof ServiceC>(ServiceType.Transient, IServiceCIdentifier, ServiceC);
-    sc.Register<IServiceD, typeof ServiceD>(ServiceType.Named, IServiceDIdentifier, ServiceD);
-    sc.Register<IServiceE, typeof ServiceE>(ServiceType.NamedScoped, IServiceEIdentifier, ServiceE);
+    sc.RegisterConstructor<IServiceA, typeof ServiceA>(ServiceType.Singleton, IServiceAIdentifier, ServiceA);
+    sc.RegisterConstructor<IServiceB, typeof ServiceB>(ServiceType.Scoped, IServiceBIdentifier, ServiceB);
+    sc.RegisterConstructor<IServiceC, typeof ServiceC>(ServiceType.Transient, IServiceCIdentifier, ServiceC);
+    sc.RegisterConstructor<IServiceD, typeof ServiceD>(ServiceType.Named, IServiceDIdentifier, ServiceD);
+    sc.RegisterConstructor<IServiceE, typeof ServiceE>(ServiceType.ScopedNamed, IServiceEIdentifier, ServiceE);
+    sc.RegisterConstructor<IServiceF, typeof ServiceF>(ServiceType.ScopedNamed, IServiceFIdentifier, ServiceF);
 
 
 }
@@ -76,3 +77,12 @@ class ServiceE implements IServiceE
     IServiceE: symbol = IServiceEIdentifier;
 }
 
+interface IServiceF
+{
+    IServiceF: symbol;
+}
+const IServiceFIdentifier = Symbol("IServiceF");
+class ServiceF implements IServiceF
+{
+    IServiceF: symbol = IServiceFIdentifier;
+}
