@@ -8,7 +8,6 @@ describe("Integration", () =>
     test("all features", () =>
     {
         const sc = new ServiceCollection();
-        const sp = sc.GetServiceProvider();
 
         registerServices(sc);
     });
@@ -16,25 +15,64 @@ describe("Integration", () =>
 
 function registerServices(sc: IServiceCollection)
 {
-    sc.Register<ILogger, typeof Logger>(ServiceType.Singleton, ILoggerIdentifier, Logger);
+    sc.Register<IServiceA, typeof ServiceA>(ServiceType.Singleton, IServiceAIdentifier, ServiceA);
+    sc.Register<IServiceB, typeof ServiceB>(ServiceType.Scoped, IServiceBIdentifier, ServiceB);
+    sc.Register<IServiceC, typeof ServiceC>(ServiceType.Transient, IServiceCIdentifier, ServiceC);
+    sc.Register<IServiceD, typeof ServiceD>(ServiceType.Named, IServiceDIdentifier, ServiceD);
+    sc.Register<IServiceE, typeof ServiceE>(ServiceType.NamedScoped, IServiceEIdentifier, ServiceE);
+
+
 }
 
 
 
-interface ILogger
+interface IServiceA
 {
-    ILogger: symbol;
-
-    LogMessage(message: string): void;
+    IServiceA: symbol;
 }
-
-const ILoggerIdentifier = Symbol();
-
-class Logger implements ILogger
+const IServiceAIdentifier = Symbol("IServiceA");
+class ServiceA implements IServiceA
 {
-    ILogger: symbol = ILoggerIdentifier;
-    LogMessage(message: string)
-    {
-        console.log(message);
-    }
+    IServiceA: symbol = IServiceAIdentifier;
 }
+
+interface IServiceB
+{
+    IServiceB: symbol;
+}
+const IServiceBIdentifier = Symbol("IServiceB");
+class ServiceB implements IServiceB
+{
+    IServiceB: symbol = IServiceBIdentifier;
+}
+
+interface IServiceC
+{
+    IServiceC: symbol;
+}
+const IServiceCIdentifier = Symbol("IServiceC");
+class ServiceC implements IServiceC
+{
+    IServiceC: symbol = IServiceCIdentifier;
+}
+
+interface IServiceD
+{
+    IServiceD: symbol;
+}
+const IServiceDIdentifier = Symbol("IServiceD");
+class ServiceD implements IServiceD
+{
+    IServiceD: symbol = IServiceDIdentifier;
+}
+
+interface IServiceE
+{
+    IServiceE: symbol;
+}
+const IServiceEIdentifier = Symbol("IServiceE");
+class ServiceE implements IServiceE
+{
+    IServiceE: symbol = IServiceEIdentifier;
+}
+
