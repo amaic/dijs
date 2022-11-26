@@ -24,7 +24,7 @@ export default interface IServiceCollection
             serviceType: ServiceType,
             interfaceIdentifier: symbol,
             classType: CLASSTYPE,
-            constructor?: (classType: CLASSTYPE, serviceProvider: IServiceProvider, instanceName?: string) => INTERFACE
+            constructor?: (classType: CLASSTYPE, serviceProvider: IServiceProvider, name?: string) => INTERFACE
         ): void;
 
     GetServiceProvider(): IServiceProvider;

@@ -23,7 +23,7 @@ export default class Service<CLASS>
 
     private readonly _instances: StringKeyDictionary<CLASS> = {};
 
-    public GetInstance(instanceName?: string): CLASS
+    public GetInstance(name?: string): CLASS
     {
         switch (this._serviceDescriptor.ServiceType)
         {
@@ -32,17 +32,17 @@ export default class Service<CLASS>
             case ServiceType.Transient:
             case ServiceType.Scoped:
 
-                if (instanceName !== undefined)
+                if (name !== undefined)
                     throw new InstanceNameNotAvailableError(`Service is of type '${ this._serviceDescriptor.ServiceType }' and parameter 'instanceName' must be null.`);
 
-                instanceName = "";
+                name = "";
                 break;
 
             case ServiceType.Named:
             case ServiceType.ScopedNamed:
             case ServiceType.TransientNamed:
 
-                if (instanceName === undefined || instanceName.isEmptyOrWhitespace())
+                if (name === undefined || name.isEmptyOrWhitespace())
                     throw new InstanceNameMandatory(`Service is of type '${ this._serviceDescriptor.ServiceType }' and parameter 'name' must not be null, empty or whitespace.`);
 
                 break;
@@ -59,7 +59,7 @@ export default class Service<CLASS>
 
             case ServiceType.TransientNamed:
 
-                return this._serviceDescriptor.ServiceConstructor(this._serviceProvider, instanceName);
+                return this._serviceDescriptor.ServiceConstructor(this._serviceProvider, name);
 
             case ServiceType.Instance:
             case ServiceType.Singleton:
@@ -74,14 +74,14 @@ export default class Service<CLASS>
             case ServiceType.Named:
             case ServiceType.ScopedNamed:
 
-                if (instanceName !== undefined)
+                if (name !== undefined)
                 {
 
-                    if (this._instances[instanceName] === undefined)
+                    if (this._instances[name] === undefined)
                     {
-                        this._instances[instanceName] = this._serviceDescriptor.ServiceConstructor(this._serviceProvider, instanceName);
+                        this._instances[name] = this._serviceDescriptor.ServiceConstructor(this._serviceProvider, name);
                     }
-                    return this._instances[instanceName];
+                    return this._instances[name];
                 }
 
             default:

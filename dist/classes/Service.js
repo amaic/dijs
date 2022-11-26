@@ -13,20 +13,20 @@ class Service {
         this._serviceProvider = serviceProvider;
         this._serviceDescriptor = serviceDescriptor;
     }
-    GetInstance(instanceName) {
+    GetInstance(name) {
         switch (this._serviceDescriptor.ServiceType) {
             case ServiceType_1.ServiceType.Instance:
             case ServiceType_1.ServiceType.Singleton:
             case ServiceType_1.ServiceType.Transient:
             case ServiceType_1.ServiceType.Scoped:
-                if (instanceName !== undefined)
+                if (name !== undefined)
                     throw new InstanceNameNotAvailableError_1.default(`Service is of type '${this._serviceDescriptor.ServiceType}' and parameter 'instanceName' must be null.`);
-                instanceName = "";
+                name = "";
                 break;
             case ServiceType_1.ServiceType.Named:
             case ServiceType_1.ServiceType.ScopedNamed:
             case ServiceType_1.ServiceType.TransientNamed:
-                if (instanceName === undefined || instanceName.isEmptyOrWhitespace())
+                if (name === undefined || name.isEmptyOrWhitespace())
                     throw new InstanceNameMandatory_1.default(`Service is of type '${this._serviceDescriptor.ServiceType}' and parameter 'name' must not be null, empty or whitespace.`);
                 break;
             default:
@@ -36,7 +36,7 @@ class Service {
             case ServiceType_1.ServiceType.Transient:
                 return this._serviceDescriptor.ServiceConstructor(this._serviceProvider);
             case ServiceType_1.ServiceType.TransientNamed:
-                return this._serviceDescriptor.ServiceConstructor(this._serviceProvider, instanceName);
+                return this._serviceDescriptor.ServiceConstructor(this._serviceProvider, name);
             case ServiceType_1.ServiceType.Instance:
             case ServiceType_1.ServiceType.Singleton:
             case ServiceType_1.ServiceType.Scoped:
@@ -46,11 +46,11 @@ class Service {
                 return this._instances[""];
             case ServiceType_1.ServiceType.Named:
             case ServiceType_1.ServiceType.ScopedNamed:
-                if (instanceName !== undefined) {
-                    if (this._instances[instanceName] === undefined) {
-                        this._instances[instanceName] = this._serviceDescriptor.ServiceConstructor(this._serviceProvider, instanceName);
+                if (name !== undefined) {
+                    if (this._instances[name] === undefined) {
+                        this._instances[name] = this._serviceDescriptor.ServiceConstructor(this._serviceProvider, name);
                     }
-                    return this._instances[instanceName];
+                    return this._instances[name];
                 }
             default:
                 throw new UnknownServiceIdentifierError_1.default();

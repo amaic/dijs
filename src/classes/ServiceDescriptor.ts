@@ -6,7 +6,7 @@ export default class ServiceDescriptor<CLASS>
     constructor(
         serviceIdentifier: symbol,
         serviceType: ServiceType,
-        serviceConstructor: (serviceProvider: IServiceProvider, instanceName?: string) => CLASS
+        serviceConstructor: (serviceProvider: IServiceProvider, name?: string) => CLASS
     )
     {
         this.ServiceIdentifier = serviceIdentifier;
@@ -18,6 +18,6 @@ export default class ServiceDescriptor<CLASS>
 
     public readonly ServiceType: ServiceType;
 
-    public readonly ServiceConstructor: (serviceProvider: IServiceProvider, instanceName?: string) => CLASS;
+    public readonly ServiceConstructor: (serviceProvider: IServiceProvider, name?: string) => CLASS;
 
 }

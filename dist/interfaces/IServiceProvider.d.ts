@@ -1,8 +1,8 @@
 export default interface IServiceProvider {
     IServiceProvider: symbol;
     get IsMainContext(): boolean;
-    GetService(serviceIdentifier: symbol, instanceName?: string): any;
-    GetService<INTERFACE>(serviceIdentifier: symbol, instanceName?: string): INTERFACE;
+    GetService(serviceIdentifier: symbol, name?: string): any;
+    GetService<INTERFACE>(serviceIdentifier: symbol, name?: string): INTERFACE;
     CreateScope(): IServiceProvider;
 }
 export declare const IServiceProviderIdentifier: unique symbol;

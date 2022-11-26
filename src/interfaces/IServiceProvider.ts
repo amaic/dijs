@@ -4,9 +4,9 @@ export default interface IServiceProvider
 
     get IsMainContext(): boolean;
 
-    GetService(serviceIdentifier: symbol, instanceName?: string): any;
+    GetService(serviceIdentifier: symbol, name?: string): any;
 
-    GetService<INTERFACE>(serviceIdentifier: symbol, instanceName?: string): INTERFACE;
+    GetService<INTERFACE>(serviceIdentifier: symbol, name?: string): INTERFACE;
 
     CreateScope(): IServiceProvider;
 }

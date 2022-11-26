@@ -5,6 +5,6 @@ export default class Service<CLASS> {
     private readonly _serviceProvider;
     private readonly _serviceDescriptor;
     private readonly _instances;
-    GetInstance(instanceName?: string): CLASS;
+    GetInstance(name?: string): CLASS;
 }
 //# sourceMappingURL=Service.d.ts.map
