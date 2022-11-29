@@ -26,7 +26,7 @@ class ServiceCollection {
     RegisterInstance(interfaceIdentifier, instance) {
         this._registerService(ServiceType_1.ServiceType.Instance, interfaceIdentifier, () => instance);
     }
-    RegisterConstructor(serviceType, interfaceIdentifier, classType, constructor) {
+    RegisterClass(serviceType, interfaceIdentifier, classType, constructor) {
         this._registerService(serviceType, interfaceIdentifier, (serviceProvider, name) => constructor === undefined ? new classType() : constructor(classType, serviceProvider, name));
     }
     RegisterFactory(serviceType, interfaceIdentifier, factory) {

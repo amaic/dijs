@@ -19,7 +19,7 @@ export default interface IServiceCollection
             factory: (serviceProvider: IServiceProvider, name?: string) => INTERFACE
         ): void
 
-    RegisterConstructor<INTERFACE, CLASSTYPE extends ServiceConstructor<INTERFACE>>
+    RegisterClass<INTERFACE, CLASSTYPE extends ServiceConstructor<INTERFACE>>
         (
             serviceType: ServiceType,
             interfaceIdentifier: symbol,

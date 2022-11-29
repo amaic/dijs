@@ -15,12 +15,12 @@ describe("Integration", () =>
 
 function registerServices(sc: IServiceCollection)
 {
-    sc.RegisterConstructor<IServiceA, typeof ServiceA>(ServiceType.Singleton, IServiceAIdentifier, ServiceA);
-    sc.RegisterConstructor<IServiceB, typeof ServiceB>(ServiceType.Scoped, IServiceBIdentifier, ServiceB);
-    sc.RegisterConstructor<IServiceC, typeof ServiceC>(ServiceType.Transient, IServiceCIdentifier, ServiceC);
-    sc.RegisterConstructor<IServiceD, typeof ServiceD>(ServiceType.Named, IServiceDIdentifier, ServiceD);
-    sc.RegisterConstructor<IServiceE, typeof ServiceE>(ServiceType.ScopedNamed, IServiceEIdentifier, ServiceE);
-    sc.RegisterConstructor<IServiceF, typeof ServiceF>(ServiceType.ScopedNamed, IServiceFIdentifier, ServiceF);
+    sc.RegisterClass<IServiceA, typeof ServiceA>(ServiceType.Singleton, IServiceAIdentifier, ServiceA);
+    sc.RegisterClass<IServiceB, typeof ServiceB>(ServiceType.Scoped, IServiceBIdentifier, ServiceB);
+    sc.RegisterClass<IServiceC, typeof ServiceC>(ServiceType.Transient, IServiceCIdentifier, ServiceC);
+    sc.RegisterClass<IServiceD, typeof ServiceD>(ServiceType.Named, IServiceDIdentifier, ServiceD);
+    sc.RegisterClass<IServiceE, typeof ServiceE>(ServiceType.ScopedNamed, IServiceEIdentifier, ServiceE);
+    sc.RegisterClass<IServiceF, typeof ServiceF>(ServiceType.ScopedNamed, IServiceFIdentifier, ServiceF);
 
 
 }
