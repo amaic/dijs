@@ -32,7 +32,7 @@ describe("Multiple implementations of the same interface.", () =>
     });
 
 
-    test("Example2: with RegisterConstructor and different identifiers", () =>
+    test("Example2: with RegisterClass and different identifiers", () =>
     {
         const ServiceIdentifier_A = Symbol();
         const ServiceIdentifier_B = Symbol();
@@ -41,10 +41,10 @@ describe("Multiple implementations of the same interface.", () =>
 
         const sc = new ServiceCollection();
 
-        sc.RegisterConstructor<IInterface1, typeof ImplementationA>(ServiceType.Transient, ServiceIdentifier_A, ImplementationA);
-        sc.RegisterConstructor<IInterface1, typeof ImplementationB>(ServiceType.Transient, ServiceIdentifier_B, ImplementationB);
-        sc.RegisterConstructor<IInterface1, typeof ImplementationC>(ServiceType.Transient, ServiceIdentifier_C, ImplementationC);
-        sc.RegisterConstructor<IInterface1, typeof ImplementationD>(ServiceType.Transient, ServiceIdentifier_D, ImplementationC);
+        sc.RegisterClass<IInterface1, typeof ImplementationA>(ServiceType.Transient, ServiceIdentifier_A, ImplementationA);
+        sc.RegisterClass<IInterface1, typeof ImplementationB>(ServiceType.Transient, ServiceIdentifier_B, ImplementationB);
+        sc.RegisterClass<IInterface1, typeof ImplementationC>(ServiceType.Transient, ServiceIdentifier_C, ImplementationC);
+        sc.RegisterClass<IInterface1, typeof ImplementationD>(ServiceType.Transient, ServiceIdentifier_D, ImplementationC);
 
         const sp = sc.GetServiceProvider();
 
@@ -96,12 +96,12 @@ describe("Multiple implementations of the same interface.", () =>
 
         const sc = new ServiceCollection();
 
-        sc.RegisterConstructor<ImplementationA, typeof ImplementationA>(ServiceType.Transient, ImplementationAIdentifier, ImplementationA);
-        sc.RegisterConstructor<ImplementationB, typeof ImplementationB>(ServiceType.Transient, ImplementationBIdentifier, ImplementationB);
-        sc.RegisterConstructor<ImplementationC, typeof ImplementationC>(ServiceType.Transient, ImplementationCIdentifier, ImplementationC);
-        sc.RegisterConstructor(ServiceType.Transient, ImplementationDIdentifier, ImplementationD);
+        sc.RegisterClass<ImplementationA, typeof ImplementationA>(ServiceType.Transient, ImplementationAIdentifier, ImplementationA);
+        sc.RegisterClass<ImplementationB, typeof ImplementationB>(ServiceType.Transient, ImplementationBIdentifier, ImplementationB);
+        sc.RegisterClass<ImplementationC, typeof ImplementationC>(ServiceType.Transient, ImplementationCIdentifier, ImplementationC);
+        sc.RegisterClass(ServiceType.Transient, ImplementationDIdentifier, ImplementationD);
 
-        sc.RegisterConstructor<IFactory, typeof Factory>(ServiceType.Transient, IFactoryIdentifier, Factory, (classType, sp) =>
+        sc.RegisterClass<IFactory, typeof Factory>(ServiceType.Transient, IFactoryIdentifier, Factory, (classType, sp) =>
             new classType(sp)
         );
 

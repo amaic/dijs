@@ -55,7 +55,7 @@ export default class ServiceCollection implements IServiceCollection
         )
     }
 
-    public RegisterConstructor<INTERFACE, CLASSTYPE extends ServiceConstructor<INTERFACE>>(
+    public RegisterClass<INTERFACE, CLASSTYPE extends ServiceConstructor<INTERFACE>>(
         serviceType: ServiceType,
         interfaceIdentifier: symbol,
         classType: CLASSTYPE,

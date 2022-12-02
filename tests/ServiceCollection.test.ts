@@ -56,7 +56,7 @@ describe("ServiceCollection", () =>
         const serviceProvider = serviceCollection.GetServiceProvider();
 
 
-        serviceCollection.RegisterConstructor<ITest1, typeof Test1>(ServiceType.Singleton, ITest1Identifier, Test1);
+        serviceCollection.RegisterClass<ITest1, typeof Test1>(ServiceType.Singleton, ITest1Identifier, Test1);
 
         const test1 = serviceProvider.GetService<ITest1>(ITest1Identifier);
 
