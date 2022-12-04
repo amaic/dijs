@@ -1,1 +1,0 @@
-{"version":3,"file":"ServiceDescriptor.js","sourceRoot":"","sources":["../../src/classes/ServiceDescriptor.ts"],"names":[],"mappings":";;AAEA,MAAqB,iBAAiB;IAElC,YACI,iBAAyB,EACzB,WAAwB,EACxB,kBAA+E;QAG/E,IAAI,CAAC,iBAAiB,GAAG,iBAAiB,CAAC;QAC3C,IAAI,CAAC,WAAW,GAAG,WAAW,CAAC;QAC/B,IAAI,CAAC,kBAAkB,GAAG,kBAAkB,CAAC;IACjD,CAAC;CAQJ;AAnBD,oCAmBC"}

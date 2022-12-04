@@ -1,1 +1,0 @@
-{"version":3,"file":"InstanceNameNotAvailableError.d.ts","sourceRoot":"","sources":["../../src/errors/InstanceNameNotAvailableError.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,OAAO,6BAA8B,SAAQ,KAAK;gBAEhD,OAAO,GAAE,MAAuC;CAI/D"}
