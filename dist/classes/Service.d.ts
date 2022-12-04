@@ -1,5 +1,5 @@
 import ServiceDescriptor from "./ServiceDescriptor";
-import IServiceProvider from "../interfaces/IServiceProvider";
+import { IServiceProvider } from "@amaic/dijs-abstractions";
 export default class Service<CLASS> {
     constructor(serviceProvider: IServiceProvider, serviceDescriptor: ServiceDescriptor<CLASS>);
     private readonly _serviceProvider;

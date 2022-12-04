@@ -1,6 +1,5 @@
 import { ServiceCollection } from '../src';
-import IServiceProvider from '../src/interfaces/IServiceProvider';
-import { ServiceType } from '../src/types/ServiceType';
+import { ServiceType, IServiceProvider } from "@amaic/dijs-abstractions";
 
 describe("Multiple implementations of the same interface.", () =>
 {

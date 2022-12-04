@@ -1,11 +1,8 @@
-import IServiceCollection, { IServiceCollectionIdentifier } from "../interfaces/IServiceCollection";
-import { ServiceConstructor } from "../types/ServiceConstructor";
-import { SymbolKeyDictionary } from "../types/Dictionary";
-import { ServiceType } from "../types/ServiceType";
-import ServiceDescriptor from "./ServiceDescriptor";
-import IServiceProvider from "../interfaces/IServiceProvider";
-import ServiceScope from "./ServiceScope";
+import { IServiceCollection, IServiceCollectionIdentifier, IServiceProvider, ServiceConstructor, ServiceType } from "@amaic/dijs-abstractions";
 import ServiceIdentifierAlreadyInUseError from "../errors/ServiceIdentifierAlreadyInUseError";
+import { SymbolKeyDictionary } from "../types/Dictionary";
+import ServiceDescriptor from "./ServiceDescriptor";
+import ServiceScope from "./ServiceScope";
 
 export default class ServiceCollection implements IServiceCollection
 {

@@ -1,11 +1,10 @@
 import ScopedNotAllowedInMainContext from "../errors/ScopedNotAllowedInMainContext";
 import UnknownOrUnsupportedServiceTypeError from "../errors/UnknownOrUnsupportedServiceTypeError";
 import UnknownServiceIdentifierError from "../errors/UnknownServiceIdentifierError";
-import IServiceProvider, { IServiceProviderIdentifier } from "../interfaces/IServiceProvider";
 import { SymbolKeyDictionary } from "../types/Dictionary";
-import { ServiceType } from "../types/ServiceType";
 import Service from "./Service";
 import ServiceDescriptor from "./ServiceDescriptor";
+import { IServiceProvider, IServiceProviderIdentifier, ServiceType } from "@amaic/dijs-abstractions";
 
 export default class ServiceScope implements IServiceProvider
 {

@@ -1,7 +1,4 @@
-import IServiceCollection from "../interfaces/IServiceCollection";
-import { ServiceConstructor } from "../types/ServiceConstructor";
-import { ServiceType } from "../types/ServiceType";
-import IServiceProvider from "../interfaces/IServiceProvider";
+import { IServiceCollection, IServiceProvider, ServiceConstructor, ServiceType } from "@amaic/dijs-abstractions";
 export default class ServiceCollection implements IServiceCollection {
     readonly IServiceCollection: symbol;
     constructor();

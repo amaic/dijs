@@ -1,10 +1,9 @@
-import { ServiceType } from "../types/ServiceType";
 import { StringKeyDictionary } from "../types/Dictionary";
 import ServiceDescriptor from "./ServiceDescriptor";
-import IServiceProvider from "../interfaces/IServiceProvider";
 import InstanceNameNotAvailableError from "../errors/InstanceNameNotAvailableError";
 import InstanceNameMandatory from "../errors/InstanceNameMandatory";
 import UnknownServiceIdentifierError from "../errors/UnknownServiceIdentifierError";
+import { IServiceProvider, ServiceType } from "@amaic/dijs-abstractions";
 
 export default class Service<CLASS>
 {

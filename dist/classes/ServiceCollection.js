@@ -3,17 +3,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const IServiceCollection_1 = require("../interfaces/IServiceCollection");
-const ServiceType_1 = require("../types/ServiceType");
+const dijs_abstractions_1 = require("@amaic/dijs-abstractions");
+const ServiceIdentifierAlreadyInUseError_1 = __importDefault(require("../errors/ServiceIdentifierAlreadyInUseError"));
 const ServiceDescriptor_1 = __importDefault(require("./ServiceDescriptor"));
 const ServiceScope_1 = __importDefault(require("./ServiceScope"));
-const ServiceIdentifierAlreadyInUseError_1 = __importDefault(require("../errors/ServiceIdentifierAlreadyInUseError"));
 class ServiceCollection {
     constructor() {
-        this.IServiceCollection = IServiceCollection_1.IServiceCollectionIdentifier;
+        this.IServiceCollection = dijs_abstractions_1.IServiceCollectionIdentifier;
         this._serviceDescriptors = {};
         this._mainScope = new ServiceScope_1.default(null, this._getServiceDescriptor.bind(this));
-        this.RegisterInstance(IServiceCollection_1.IServiceCollectionIdentifier, this);
+        this.RegisterInstance(dijs_abstractions_1.IServiceCollectionIdentifier, this);
     }
     _getServiceDescriptor(serviceIdentifier) {
         return this._serviceDescriptors[serviceIdentifier];
@@ -24,7 +23,7 @@ class ServiceCollection {
         this._serviceDescriptors[serviceIdentifier] = new ServiceDescriptor_1.default(serviceIdentifier, serviceType, serviceConstructor);
     }
     RegisterInstance(interfaceIdentifier, instance) {
-        this._registerService(ServiceType_1.ServiceType.Instance, interfaceIdentifier, () => instance);
+        this._registerService(dijs_abstractions_1.ServiceType.Instance, interfaceIdentifier, () => instance);
     }
     RegisterClass(serviceType, interfaceIdentifier, classType, constructor) {
         this._registerService(serviceType, interfaceIdentifier, (serviceProvider, name) => constructor === undefined ? new classType() : constructor(classType, serviceProvider, name));

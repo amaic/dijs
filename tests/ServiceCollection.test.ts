@@ -1,6 +1,5 @@
 import ServiceCollection from '../src/classes/ServiceCollection'
-import IServiceCollection, { IServiceCollectionIdentifier } from '../src/interfaces/IServiceCollection';
-import { ServiceType } from '../src/types/ServiceType';
+import { IServiceCollection, IServiceCollectionIdentifier, ServiceType } from "@amaic/dijs-abstractions";
 
 describe("ServiceCollection", () =>
 {

@@ -1,8 +1,8 @@
 import '../src';
 import ServiceCollection from "../src/classes/ServiceCollection";
-import { ServiceType } from "../src/types/ServiceType";
 import ServiceIdentifierAlreadyInUseError from "../src/errors/ServiceIdentifierAlreadyInUseError";
 import ScopedNotAllowedInMainContext from "../src/errors/ScopedNotAllowedInMainContext";
+import { ServiceType } from "@amaic/dijs-abstractions";
 
 describe("Service", () =>
 {

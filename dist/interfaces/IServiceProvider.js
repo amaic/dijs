@@ -1,9 +1,15 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.IsIServiceProvider = exports.IServiceProviderIdentifier = void 0;
-exports.IServiceProviderIdentifier = Symbol("IServiceProvider");
-function IsIServiceProvider(instance) {
-    return (instance === null || instance === void 0 ? void 0 : instance.IServiceProvider) === exports.IServiceProviderIdentifier;
-}
-exports.IsIServiceProvider = IsIServiceProvider;
+// export default interface IServiceProvider
+// {
+//     IServiceProvider: symbol;
+//     get IsMainContext(): boolean;
+//     GetService(serviceIdentifier: symbol, name?: string): any;
+//     GetService<INTERFACE>(serviceIdentifier: symbol, name?: string): INTERFACE;
+//     CreateScope(): IServiceProvider;
+// }
+// export const IServiceProviderIdentifier = Symbol("IServiceProvider");
+// export function IsIServiceProvider(instance: any): instance is IServiceProvider
+// {
+//     return instance?.IServiceProvider === IServiceProviderIdentifier;
+// }
 //# sourceMappingURL=IServiceProvider.js.map

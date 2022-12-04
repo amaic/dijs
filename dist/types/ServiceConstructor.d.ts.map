@@ -1,1 +1,1 @@
-{"version":3,"file":"ServiceConstructor.d.ts","sourceRoot":"","sources":["../../src/types/ServiceConstructor.ts"],"names":[],"mappings":"AAAA,oBAAY,kBAAkB,CAAC,KAAK,IAAI;IAAE,KAAI,GAAG,IAAI,EAAE,GAAG,EAAE,GAAG,KAAK,CAAC;CAAE,CAAC;AAExE,oBAAY,iCAAiC,CAAC,KAAK,EAAE,UAAU,SAAS,GAAG,EAAE,IAAI;IAAE,KAAI,GAAG,IAAI,EAAE,UAAU,GAAG,KAAK,CAAC;CAAE,CAAC"}
+{"version":3,"file":"ServiceConstructor.d.ts","sourceRoot":"","sources":["../../src/types/ServiceConstructor.ts"],"names":[],"mappings":""}

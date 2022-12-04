@@ -1,9 +1,33 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.IsIServiceCollection = exports.IServiceCollectionIdentifier = void 0;
-exports.IServiceCollectionIdentifier = Symbol("IServiceCollection");
-function IsIServiceCollection(instance) {
-    return (instance === null || instance === void 0 ? void 0 : instance.IServiceCollection) === exports.IServiceCollectionIdentifier;
-}
-exports.IsIServiceCollection = IsIServiceCollection;
+// import { ServiceConstructor, ServiceConstructorTypedParameters } from "../types/ServiceConstructor";
+// import { ServiceType } from "../types/ServiceType";
+// import IServiceProvider from "./IServiceProvider";
+// export default interface IServiceCollection
+// {
+//     IServiceCollection: symbol;
+//     RegisterInstance<INTERFACE, INSTANCE extends INTERFACE>
+//         (
+//             interfaceIdentifier: symbol,
+//             instance: INSTANCE
+//         ): void;
+//     RegisterFactory<INTERFACE>
+//         (
+//             serviceType: ServiceType,
+//             interfaceIdentifier: symbol,
+//             factory: (serviceProvider: IServiceProvider, name?: string) => INTERFACE
+//         ): void
+//     RegisterClass<INTERFACE, CLASSTYPE extends ServiceConstructor<INTERFACE>>
+//         (
+//             serviceType: ServiceType,
+//             interfaceIdentifier: symbol,
+//             classType: CLASSTYPE,
+//             constructor?: (classType: CLASSTYPE, serviceProvider: IServiceProvider, name?: string) => INTERFACE
+//         ): void;
+//     GetServiceProvider(): IServiceProvider;
+// }
+// export const IServiceCollectionIdentifier = Symbol("IServiceCollection");
+// export function IsIServiceCollection(instance: any): instance is IServiceCollection
+// {
+//     return instance?.IServiceCollection === IServiceCollectionIdentifier;
+// }
 //# sourceMappingURL=IServiceCollection.js.map
