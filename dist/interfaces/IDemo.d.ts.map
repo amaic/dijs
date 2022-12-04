@@ -1,1 +1,0 @@
-{"version":3,"file":"IDemo.d.ts","sourceRoot":"","sources":["../../src/interfaces/IDemo.ts"],"names":[],"mappings":"AAAA,OAAO,cAAc,MAAM,kBAAkB,CAAC;AAE9C,qBAAa,UAAW,YAAW,cAAc,CAAC,KAAK,CAAC;;IAOpD,UAAU,EAAE,MAAM,CAAmB;IAErC,mBAAmB,CAAC,QAAQ,EAAE,GAAG,GAAG,QAAQ,IAAI,KAAK;CAIxD;AACD,MAAM,CAAC,OAAO,WAAW,KAAK;IAE1B,KAAK,EAAE,IAAI,CAAC;CACf"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"ServiceIdentifierAlreadyInUseError.js","sourceRoot":"","sources":["../../src/errors/ServiceIdentifierAlreadyInUseError.ts"],"names":[],"mappings":";;AAAA,MAAqB,kCAAmC,SAAQ,KAAK;IAEjE,YAAY,UAAkB,oCAAoC;QAE9D,KAAK,CAAC,OAAO,CAAC,CAAC;IACnB,CAAC;CACJ;AAND,qDAMC"}

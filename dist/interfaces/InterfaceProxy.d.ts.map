@@ -1,1 +1,0 @@
-{"version":3,"file":"InterfaceProxy.d.ts","sourceRoot":"","sources":["../../src/interfaces/InterfaceProxy.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,WAAW,cAAc,CAAC,SAAS;IAE7C,UAAU,EAAE,MAAM,CAAC;IAEnB,mBAAmB,CAAC,cAAc,EAAE,GAAG,GAAG,cAAc,IAAI,SAAS,CAAC;CACzE"}
