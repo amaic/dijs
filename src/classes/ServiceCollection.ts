@@ -34,8 +34,28 @@ export default class ServiceCollection implements IServiceCollection
     {
         // TODO implement logic for registration mode
 
-        if (this._serviceDescriptors[serviceIdentifier] !== undefined)
-            throw new ServiceIdentifierAlreadyInUseError(`Service with identifier '${ serviceIdentifier.description }' already registered.`);
+        switch (registrationMode)
+        {
+            case ServiceRegistrationMode.Single:
+
+                if (this._serviceDescriptors[serviceIdentifier] !== undefined)
+                {
+                    throw new ServiceIdentifierAlreadyInUseError(`Service with identifier '${ serviceIdentifier.description }' already registered.`);
+                }
+                break;
+
+            case ServiceRegistrationMode.Overwrite:
+                throw new Error("not implemented");
+                break;
+
+            case ServiceRegistrationMode.Multiple:
+                throw new Error("not implemented");
+                break;
+
+            default:
+                throw new Error("Invalid service registration mode.");
+        }
+
 
         this._serviceDescriptors[serviceIdentifier] = new ServiceDescriptor(
             serviceIdentifier,

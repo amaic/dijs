@@ -20,8 +20,21 @@ class ServiceCollection {
     }
     _registerService(registrationMode, serviceType, serviceIdentifier, serviceConstructor) {
         // TODO implement logic for registration mode
-        if (this._serviceDescriptors[serviceIdentifier] !== undefined)
-            throw new ServiceIdentifierAlreadyInUseError_1.default(`Service with identifier '${serviceIdentifier.description}' already registered.`);
+        switch (registrationMode) {
+            case ServiceRegistrationMode_1.ServiceRegistrationMode.Single:
+                if (this._serviceDescriptors[serviceIdentifier] !== undefined) {
+                    throw new ServiceIdentifierAlreadyInUseError_1.default(`Service with identifier '${serviceIdentifier.description}' already registered.`);
+                }
+                break;
+            case ServiceRegistrationMode_1.ServiceRegistrationMode.Overwrite:
+                throw new Error("not implemented");
+                break;
+            case ServiceRegistrationMode_1.ServiceRegistrationMode.Multiple:
+                throw new Error("not implemented");
+                break;
+            default:
+                throw new Error("Invalid service registration mode.");
+        }
         this._serviceDescriptors[serviceIdentifier] = new ServiceDescriptor_1.default(serviceIdentifier, serviceType, serviceConstructor);
     }
     RegisterInstance(registrationMode, interfaceIdentifier, instance) {
