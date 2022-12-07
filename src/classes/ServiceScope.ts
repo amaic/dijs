@@ -59,6 +59,11 @@ export default class ServiceScope implements IServiceProvider
             case ServiceType.Scoped:
             case ServiceType.ScopedNamed:
 
+                if (this.IsMainContext)
+                {
+                    throw new ScopedNotAllowedInMainContext(`Scoped service type '${ serviceDescriptor.ServiceIdentifier.description }' not allowed in main context.`);
+                }
+
                 if (this._services[serviceDescriptor.ServiceIdentifier] === undefined)
                 {
                     this._services[serviceDescriptor.ServiceIdentifier] = new Service(
@@ -74,32 +79,30 @@ export default class ServiceScope implements IServiceProvider
 
     }
 
-    public GetService<Interface>(serviceIdentifier: symbol, instanceName?: string): Interface
+    public GetService(serviceIdentifier: symbol, name?: string): any
+    {
+        const serviceDescriptor = this._getServiceDescriptor(serviceIdentifier);
+
+        if (serviceDescriptor === undefined)
+            return null;
+
+        const service = this._getService(serviceDescriptor)
+
+        return service.GetInstance(name);
+    }
+
+    public GetRequiredService(serviceIdentifier: symbol, name?: string | undefined): any
     {
         const serviceDescriptor = this._getServiceDescriptor(serviceIdentifier);
 
         if (serviceDescriptor === undefined)
             throw new UnknownServiceIdentifierError(`Service with identifier '${ serviceIdentifier.description }' not found.`);
 
-        switch (serviceDescriptor.ServiceType)
-        {
-            case ServiceType.Scoped:
-            case ServiceType.ScopedNamed:
-
-                if (this.IsMainContext)
-                {
-                    throw new ScopedNotAllowedInMainContext(`Scoped service type '${ serviceIdentifier.description }' not allowed in main context.`);
-                }
-                break;
-
-            default:
-                break;
-        }
-
         const service = this._getService(serviceDescriptor)
 
-        return service.GetInstance(instanceName);
+        return service.GetInstance(name);
     }
+
 
     public CreateScope(): IServiceProvider
     {

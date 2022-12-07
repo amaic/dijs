@@ -36,6 +36,9 @@ class ServiceScope {
                 }
             case dijs_abstractions_1.ServiceType.Scoped:
             case dijs_abstractions_1.ServiceType.ScopedNamed:
+                if (this.IsMainContext) {
+                    throw new ScopedNotAllowedInMainContext_1.default(`Scoped service type '${serviceDescriptor.ServiceIdentifier.description}' not allowed in main context.`);
+                }
                 if (this._services[serviceDescriptor.ServiceIdentifier] === undefined) {
                     this._services[serviceDescriptor.ServiceIdentifier] = new Service_1.default(this, serviceDescriptor);
                 }
@@ -44,22 +47,19 @@ class ServiceScope {
                 throw new UnknownOrUnsupportedServiceTypeError_1.default();
         }
     }
-    GetService(serviceIdentifier, instanceName) {
+    GetService(serviceIdentifier, name) {
+        const serviceDescriptor = this._getServiceDescriptor(serviceIdentifier);
+        if (serviceDescriptor === undefined)
+            return null;
+        const service = this._getService(serviceDescriptor);
+        return service.GetInstance(name);
+    }
+    GetRequiredService(serviceIdentifier, name) {
         const serviceDescriptor = this._getServiceDescriptor(serviceIdentifier);
         if (serviceDescriptor === undefined)
             throw new UnknownServiceIdentifierError_1.default(`Service with identifier '${serviceIdentifier.description}' not found.`);
-        switch (serviceDescriptor.ServiceType) {
-            case dijs_abstractions_1.ServiceType.Scoped:
-            case dijs_abstractions_1.ServiceType.ScopedNamed:
-                if (this.IsMainContext) {
-                    throw new ScopedNotAllowedInMainContext_1.default(`Scoped service type '${serviceIdentifier.description}' not allowed in main context.`);
-                }
-                break;
-            default:
-                break;
-        }
         const service = this._getService(serviceDescriptor);
-        return service.GetInstance(instanceName);
+        return service.GetInstance(name);
     }
     CreateScope() {
         return new ServiceScope(this, this._getServiceDescriptor);

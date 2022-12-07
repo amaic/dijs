@@ -8,7 +8,8 @@ export default class ServiceScope implements IServiceProvider {
     private readonly _services;
     get IsMainContext(): boolean;
     private _getService;
-    GetService<Interface>(serviceIdentifier: symbol, instanceName?: string): Interface;
+    GetService(serviceIdentifier: symbol, name?: string): any;
+    GetRequiredService(serviceIdentifier: symbol, name?: string | undefined): any;
     CreateScope(): IServiceProvider;
 }
 //# sourceMappingURL=ServiceScope.d.ts.map
