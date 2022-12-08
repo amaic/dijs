@@ -1,5 +1,4 @@
-import { IServiceCollection, IServiceCollectionIdentifier, IServiceProvider, ServiceConstructor, ServiceType } from "@amaic/dijs-abstractions";
-import { ServiceRegistrationMode } from "@amaic/dijs-abstractions/dist/types/ServiceRegistrationMode";
+import { IServiceCollection, IServiceCollectionIdentifier, IServiceProvider, ServiceConstructor, ServiceRegistrationMode, ServiceType } from "@amaic/dijs-abstractions";
 import InvalidServiceType from "../errors/InvalidServiceType";
 import ServiceIdentifierAlreadyInUse from "../errors/ServiceIdentifierAlreadyInUse";
 import { SymbolKeyDictionary } from "../types/Dictionary";
@@ -125,7 +124,7 @@ export default class ServiceCollection implements IServiceCollection
         );
     }
 
-    public GetServiceProvider(): IServiceProvider
+    public CreateServiceProvider(): IServiceProvider
     {
         const serviceDescriptorsClone: SymbolKeyDictionary<ServiceDescriptor<any>> = {};
 

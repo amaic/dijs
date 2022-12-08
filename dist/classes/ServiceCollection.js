@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dijs_abstractions_1 = require("@amaic/dijs-abstractions");
-const ServiceRegistrationMode_1 = require("@amaic/dijs-abstractions/dist/types/ServiceRegistrationMode");
 const InvalidServiceType_1 = __importDefault(require("../errors/InvalidServiceType"));
 const ServiceIdentifierAlreadyInUse_1 = __importDefault(require("../errors/ServiceIdentifierAlreadyInUse"));
 const ServiceDescriptor_1 = __importDefault(require("./ServiceDescriptor"));
@@ -13,20 +12,20 @@ class ServiceCollection {
     constructor() {
         this.IServiceCollection = dijs_abstractions_1.IServiceCollectionIdentifier;
         this._serviceDescriptors = {};
-        this.RegisterInstance(ServiceRegistrationMode_1.ServiceRegistrationMode.Single, dijs_abstractions_1.IServiceCollectionIdentifier, this);
+        this.RegisterInstance(dijs_abstractions_1.ServiceRegistrationMode.Single, dijs_abstractions_1.IServiceCollectionIdentifier, this);
     }
     _registerService(registrationMode, serviceType, serviceIdentifier, serviceConstructor) {
         switch (registrationMode) {
-            case ServiceRegistrationMode_1.ServiceRegistrationMode.Overwrite:
+            case dijs_abstractions_1.ServiceRegistrationMode.Overwrite:
                 this._serviceDescriptors[serviceIdentifier] = new ServiceDescriptor_1.default(serviceIdentifier, serviceType, serviceConstructor);
                 break;
-            case ServiceRegistrationMode_1.ServiceRegistrationMode.Single:
+            case dijs_abstractions_1.ServiceRegistrationMode.Single:
                 if (this._serviceDescriptors[serviceIdentifier] != undefined) {
                     throw new ServiceIdentifierAlreadyInUse_1.default(`Service with identifier '${serviceIdentifier.description}' is already registered.`);
                 }
                 this._serviceDescriptors[serviceIdentifier] = new ServiceDescriptor_1.default(serviceIdentifier, serviceType, serviceConstructor);
                 break;
-            case ServiceRegistrationMode_1.ServiceRegistrationMode.Multiple:
+            case dijs_abstractions_1.ServiceRegistrationMode.Multiple:
                 if (this._serviceDescriptors[serviceIdentifier] == undefined) {
                     this._serviceDescriptors[serviceIdentifier] = new ServiceDescriptor_1.default(serviceIdentifier, serviceType, serviceConstructor);
                 }
@@ -50,7 +49,7 @@ class ServiceCollection {
     RegisterFactory(registrationMode, serviceType, interfaceIdentifier, factory) {
         this._registerService(registrationMode, serviceType, interfaceIdentifier, (serviceProvider, name) => factory(serviceProvider, name));
     }
-    GetServiceProvider() {
+    CreateServiceProvider() {
         const serviceDescriptorsClone = {};
         const keys = Object.getOwnPropertySymbols(this._serviceDescriptors);
         for (let key of keys) {
