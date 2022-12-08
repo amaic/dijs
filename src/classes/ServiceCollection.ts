@@ -1,6 +1,7 @@
 import { IServiceCollection, IServiceCollectionIdentifier, IServiceProvider, ServiceConstructor, ServiceType } from "@amaic/dijs-abstractions";
 import { ServiceRegistrationMode } from "@amaic/dijs-abstractions/dist/types/ServiceRegistrationMode";
-import ServiceIdentifierAlreadyInUseError from "../errors/ServiceIdentifierAlreadyInUseError";
+import InvalidServiceType from "../errors/InvalidServiceType";
+import ServiceIdentifierAlreadyInUse from "../errors/ServiceIdentifierAlreadyInUse";
 import { SymbolKeyDictionary } from "../types/Dictionary";
 import ServiceDescriptor from "./ServiceDescriptor";
 import ServiceScope from "./ServiceScope";
@@ -11,19 +12,14 @@ export default class ServiceCollection implements IServiceCollection
 
     constructor()
     {
-        this._mainScope = new ServiceScope(null, this._getServiceDescriptor.bind(this));
-
-        this.RegisterInstance<IServiceCollection, ServiceCollection>(ServiceRegistrationMode.Single, IServiceCollectionIdentifier, this);
+        this.RegisterInstance<IServiceCollection, ServiceCollection>(
+            ServiceRegistrationMode.Single,
+            IServiceCollectionIdentifier,
+            this
+        );
     }
 
     private readonly _serviceDescriptors: SymbolKeyDictionary<ServiceDescriptor<any>> = {};
-
-    private readonly _mainScope: ServiceScope;
-
-    private _getServiceDescriptor(serviceIdentifier: symbol): ServiceDescriptor<any> | undefined
-    {
-        return this._serviceDescriptors[serviceIdentifier];
-    }
 
     private _registerService<INTERFACE, CLASS extends INTERFACE>(
         registrationMode: ServiceRegistrationMode,
@@ -32,36 +28,56 @@ export default class ServiceCollection implements IServiceCollection
         serviceConstructor: (serviceProvider: IServiceProvider, name?: string) => CLASS
     )
     {
-        // TODO implement logic for registration mode
-
         switch (registrationMode)
         {
-            case ServiceRegistrationMode.Single:
+            case ServiceRegistrationMode.Overwrite:
 
-                if (this._serviceDescriptors[serviceIdentifier] !== undefined)
-                {
-                    throw new ServiceIdentifierAlreadyInUseError(`Service with identifier '${ serviceIdentifier.description }' already registered.`);
-                }
+                this._serviceDescriptors[serviceIdentifier] = new ServiceDescriptor(
+                    serviceIdentifier,
+                    serviceType,
+                    serviceConstructor
+                );
                 break;
 
-            case ServiceRegistrationMode.Overwrite:
-                throw new Error("not implemented");
+            case ServiceRegistrationMode.Single:
+
+                if (this._serviceDescriptors[serviceIdentifier] != undefined)
+                {
+                    throw new ServiceIdentifierAlreadyInUse(`Service with identifier '${ serviceIdentifier.description }' is already registered.`);
+                }
+
+                this._serviceDescriptors[serviceIdentifier] = new ServiceDescriptor(
+                    serviceIdentifier,
+                    serviceType,
+                    serviceConstructor
+                );
                 break;
 
             case ServiceRegistrationMode.Multiple:
-                throw new Error("not implemented");
+
+                if (this._serviceDescriptors[serviceIdentifier] == undefined)
+                {
+                    this._serviceDescriptors[serviceIdentifier] = new ServiceDescriptor(
+                        serviceIdentifier,
+                        serviceType,
+                        serviceConstructor
+                    );
+                }
+                else
+                {
+                    if (serviceType != this._serviceDescriptors[serviceIdentifier].ServiceType)
+                    {
+                        throw new InvalidServiceType(`${ serviceType } <> ${ this._serviceDescriptors[serviceIdentifier].ServiceType }`);
+                    }
+
+                    this._serviceDescriptors[serviceIdentifier].ServiceConstructors.push(serviceConstructor);
+                }
                 break;
 
             default:
                 throw new Error("Invalid service registration mode.");
         }
 
-
-        this._serviceDescriptors[serviceIdentifier] = new ServiceDescriptor(
-            serviceIdentifier,
-            serviceType,
-            serviceConstructor
-        );
     }
 
     public RegisterInstance<INTERFACE, INSTANCE extends INTERFACE>(
@@ -90,7 +106,7 @@ export default class ServiceCollection implements IServiceCollection
             registrationMode,
             serviceType,
             interfaceIdentifier,
-            (serviceProvider, name) => constructor === undefined ? new classType() : constructor(classType, serviceProvider, name)
+            (serviceProvider, name) => constructor == undefined ? new classType() : constructor(classType, serviceProvider, name)
         );
     }
 
@@ -111,6 +127,17 @@ export default class ServiceCollection implements IServiceCollection
 
     public GetServiceProvider(): IServiceProvider
     {
-        return this._mainScope;
+        const serviceDescriptorsClone: SymbolKeyDictionary<ServiceDescriptor<any>> = {};
+
+        const keys = Object.getOwnPropertySymbols(this._serviceDescriptors);
+
+        for (let key of keys)
+        {
+            serviceDescriptorsClone[key] = this._serviceDescriptors[key].Clone();
+        }
+
+        const serviceProvider = new ServiceScope(null, serviceDescriptorsClone);
+
+        return serviceProvider;
     }
 }

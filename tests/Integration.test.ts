@@ -1,6 +1,7 @@
 import '../src';
 import { ServiceCollection } from '../src';
 import { IServiceCollection, ServiceType } from "@amaic/dijs-abstractions";
+import { ServiceRegistrationMode } from '@amaic/dijs-abstractions/dist/types/ServiceRegistrationMode';
 
 describe("Integration", () =>
 {
@@ -14,12 +15,12 @@ describe("Integration", () =>
 
 function registerServices(sc: IServiceCollection)
 {
-    sc.RegisterClass<IServiceA, typeof ServiceA>(ServiceType.Singleton, IServiceAIdentifier, ServiceA);
-    sc.RegisterClass<IServiceB, typeof ServiceB>(ServiceType.Scoped, IServiceBIdentifier, ServiceB);
-    sc.RegisterClass<IServiceC, typeof ServiceC>(ServiceType.Transient, IServiceCIdentifier, ServiceC);
-    sc.RegisterClass<IServiceD, typeof ServiceD>(ServiceType.Named, IServiceDIdentifier, ServiceD);
-    sc.RegisterClass<IServiceE, typeof ServiceE>(ServiceType.ScopedNamed, IServiceEIdentifier, ServiceE);
-    sc.RegisterClass<IServiceF, typeof ServiceF>(ServiceType.ScopedNamed, IServiceFIdentifier, ServiceF);
+    sc.RegisterClass<IServiceA, typeof ServiceA>(ServiceRegistrationMode.Single, ServiceType.Singleton, IServiceAIdentifier, ServiceA);
+    sc.RegisterClass<IServiceB, typeof ServiceB>(ServiceRegistrationMode.Single, ServiceType.Scoped, IServiceBIdentifier, ServiceB);
+    sc.RegisterClass<IServiceC, typeof ServiceC>(ServiceRegistrationMode.Single, ServiceType.Transient, IServiceCIdentifier, ServiceC);
+    sc.RegisterClass<IServiceD, typeof ServiceD>(ServiceRegistrationMode.Single, ServiceType.Named, IServiceDIdentifier, ServiceD);
+    sc.RegisterClass<IServiceE, typeof ServiceE>(ServiceRegistrationMode.Single, ServiceType.ScopedNamed, IServiceEIdentifier, ServiceE);
+    sc.RegisterClass<IServiceF, typeof ServiceF>(ServiceRegistrationMode.Single, ServiceType.ScopedNamed, IServiceFIdentifier, ServiceF);
 
 
 }

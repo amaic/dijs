@@ -1,5 +1,6 @@
 import { ServiceCollection } from '../src';
 import { ServiceType, IServiceProvider } from "@amaic/dijs-abstractions";
+import { ServiceRegistrationMode } from '@amaic/dijs-abstractions/dist/types/ServiceRegistrationMode';
 
 describe("Multiple implementations of the same interface.", () =>
 {
@@ -7,7 +8,7 @@ describe("Multiple implementations of the same interface.", () =>
     {
         const sc = new ServiceCollection();
 
-        sc.RegisterFactory<IInterface1>(ServiceType.Named, IInterface1Identifier, 
+        sc.RegisterFactory<IInterface1>(ServiceRegistrationMode.Single, ServiceType.Named, IInterface1Identifier, 
             (sp, name) =>
             {
                 switch(name)
@@ -40,10 +41,10 @@ describe("Multiple implementations of the same interface.", () =>
 
         const sc = new ServiceCollection();
 
-        sc.RegisterClass<IInterface1, typeof ImplementationA>(ServiceType.Transient, ServiceIdentifier_A, ImplementationA);
-        sc.RegisterClass<IInterface1, typeof ImplementationB>(ServiceType.Transient, ServiceIdentifier_B, ImplementationB);
-        sc.RegisterClass<IInterface1, typeof ImplementationC>(ServiceType.Transient, ServiceIdentifier_C, ImplementationC);
-        sc.RegisterClass<IInterface1, typeof ImplementationD>(ServiceType.Transient, ServiceIdentifier_D, ImplementationC);
+        sc.RegisterClass<IInterface1, typeof ImplementationA>(ServiceRegistrationMode.Single, ServiceType.Transient, ServiceIdentifier_A, ImplementationA);
+        sc.RegisterClass<IInterface1, typeof ImplementationB>(ServiceRegistrationMode.Single, ServiceType.Transient, ServiceIdentifier_B, ImplementationB);
+        sc.RegisterClass<IInterface1, typeof ImplementationC>(ServiceRegistrationMode.Single, ServiceType.Transient, ServiceIdentifier_C, ImplementationC);
+        sc.RegisterClass<IInterface1, typeof ImplementationD>(ServiceRegistrationMode.Single, ServiceType.Transient, ServiceIdentifier_D, ImplementationC);
 
         const sp = sc.GetServiceProvider();
 
@@ -95,12 +96,12 @@ describe("Multiple implementations of the same interface.", () =>
 
         const sc = new ServiceCollection();
 
-        sc.RegisterClass<ImplementationA, typeof ImplementationA>(ServiceType.Transient, ImplementationAIdentifier, ImplementationA);
-        sc.RegisterClass<ImplementationB, typeof ImplementationB>(ServiceType.Transient, ImplementationBIdentifier, ImplementationB);
-        sc.RegisterClass<ImplementationC, typeof ImplementationC>(ServiceType.Transient, ImplementationCIdentifier, ImplementationC);
-        sc.RegisterClass(ServiceType.Transient, ImplementationDIdentifier, ImplementationD);
+        sc.RegisterClass<ImplementationA, typeof ImplementationA>(ServiceRegistrationMode.Single, ServiceType.Transient, ImplementationAIdentifier, ImplementationA);
+        sc.RegisterClass<ImplementationB, typeof ImplementationB>(ServiceRegistrationMode.Single, ServiceType.Transient, ImplementationBIdentifier, ImplementationB);
+        sc.RegisterClass<ImplementationC, typeof ImplementationC>(ServiceRegistrationMode.Single, ServiceType.Transient, ImplementationCIdentifier, ImplementationC);
+        sc.RegisterClass(ServiceRegistrationMode.Single, ServiceType.Transient, ImplementationDIdentifier, ImplementationD);
 
-        sc.RegisterClass<IFactory, typeof Factory>(ServiceType.Transient, IFactoryIdentifier, Factory, (classType, sp) =>
+        sc.RegisterClass<IFactory, typeof Factory>(ServiceRegistrationMode.Single, ServiceType.Transient, IFactoryIdentifier, Factory, (classType, sp) =>
             new classType(sp)
         );
 

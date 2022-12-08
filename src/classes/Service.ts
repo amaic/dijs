@@ -1,6 +1,6 @@
 import { StringKeyDictionary } from "../types/Dictionary";
 import ServiceDescriptor from "./ServiceDescriptor";
-import InstanceNameNotAvailableError from "../errors/InstanceNameNotAvailableError";
+import InstanceNameNotAvailable from "../errors/InstanceNameNotAvailable";
 import InstanceNameMandatory from "../errors/InstanceNameMandatory";
 import UnknownServiceIdentifierError from "../errors/UnknownServiceIdentifierError";
 import { IServiceProvider, ServiceType } from "@amaic/dijs-abstractions";
@@ -24,6 +24,12 @@ export default class Service<CLASS>
 
     public GetInstance(name?: string): CLASS
     {
+        const serviceConstructor = this._serviceDescriptor.ServiceConstructors.at(-1);
+        if (serviceConstructor == undefined)
+        {
+            throw new Error("Should not happen: no service constructor found.");
+        }
+
         switch (this._serviceDescriptor.ServiceType)
         {
             case ServiceType.Instance:
@@ -32,7 +38,7 @@ export default class Service<CLASS>
             case ServiceType.Scoped:
 
                 if (name !== undefined)
-                    throw new InstanceNameNotAvailableError(`Service is of type '${ this._serviceDescriptor.ServiceType }' and parameter 'instanceName' must be null.`);
+                    throw new InstanceNameNotAvailable(`Service is of type '${ this._serviceDescriptor.ServiceType }' and parameter 'instanceName' must be null.`);
 
                 name = "";
                 break;
@@ -54,11 +60,11 @@ export default class Service<CLASS>
         {
             case ServiceType.Transient:
 
-                return this._serviceDescriptor.ServiceConstructor(this._serviceProvider);
+                return serviceConstructor(this._serviceProvider);
 
             case ServiceType.TransientNamed:
 
-                return this._serviceDescriptor.ServiceConstructor(this._serviceProvider, name);
+                return serviceConstructor(this._serviceProvider, name);
 
             case ServiceType.Instance:
             case ServiceType.Singleton:
@@ -66,7 +72,7 @@ export default class Service<CLASS>
 
                 if (this._instances[""] === undefined)
                 {
-                    this._instances[""] = this._serviceDescriptor.ServiceConstructor(this._serviceProvider);
+                    this._instances[""] = serviceConstructor(this._serviceProvider);
                 }
                 return this._instances[""];
 
@@ -78,7 +84,7 @@ export default class Service<CLASS>
 
                     if (this._instances[name] === undefined)
                     {
-                        this._instances[name] = this._serviceDescriptor.ServiceConstructor(this._serviceProvider, name);
+                        this._instances[name] = serviceConstructor(this._serviceProvider, name);
                     }
                     return this._instances[name];
                 }

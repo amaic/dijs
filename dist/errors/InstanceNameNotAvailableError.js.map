@@ -1,1 +1,0 @@
-{"version":3,"file":"InstanceNameNotAvailableError.js","sourceRoot":"","sources":["../../src/errors/InstanceNameNotAvailableError.ts"],"names":[],"mappings":";;AAAA,MAAqB,6BAA8B,SAAQ,KAAK;IAE5D,YAAY,UAAkB,8BAA8B;QAExD,KAAK,CAAC,OAAO,CAAC,CAAC;IACnB,CAAC;CACJ;AAND,gDAMC"}

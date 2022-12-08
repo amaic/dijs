@@ -39,5 +39,20 @@ describe("Dummy", () =>
         let x: ITest1Type = "Getter1";
 
     });
+
+    test("objects and symbol properties", () =>
+    {
+        const symbol1: unique symbol = Symbol("1");
+
+        const object = { [symbol1]: "Hallo Welt" };
+
+
+        const keys = Object.getOwnPropertySymbols(object);
+        
+        for(let key of keys)
+        {
+            console.debug(object[key]);
+        }
+    })
 });
 

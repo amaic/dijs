@@ -1,17 +1,19 @@
 import '../src';
 import ServiceCollection from "../src/classes/ServiceCollection";
-import ServiceIdentifierAlreadyInUseError from "../src/errors/ServiceIdentifierAlreadyInUseError";
+import ServiceIdentifierAlreadyInUse from "../src/errors/ServiceIdentifierAlreadyInUse";
 import ScopedNotAllowedInMainContext from "../src/errors/ScopedNotAllowedInMainContext";
 import { ServiceType } from "@amaic/dijs-abstractions";
+import { ServiceRegistrationMode } from '@amaic/dijs-abstractions/dist/types/ServiceRegistrationMode';
 
 describe("Service", () =>
 {
     test("singleton: registration without parameters, creating instance", () =>
     {
         const sc = new ServiceCollection();
-        const sp = sc.GetServiceProvider();
 
-        sc.RegisterClass<ITest1, typeof Test1_a>(ServiceType.Singleton, ITest1Identifier, Test1_a);
+        sc.RegisterClass<ITest1, typeof Test1_a>(ServiceRegistrationMode.Single, ServiceType.Singleton, ITest1Identifier, Test1_a);
+
+        const sp = sc.GetServiceProvider();
 
         const test1_a_a = sp.GetService(ITest1Identifier);
 
@@ -22,24 +24,26 @@ describe("Service", () =>
     test("singleton: conflicting registration", () =>
     {
         const sc = new ServiceCollection();
-        const sp = sc.GetServiceProvider();
 
-        sc.RegisterClass<ITest1, typeof Test1_a>(ServiceType.Singleton, ITest1Identifier, Test1_a);
+        sc.RegisterClass<ITest1, typeof Test1_a>(ServiceRegistrationMode.Single, ServiceType.Singleton, ITest1Identifier, Test1_a);
+
+        const sp = sc.GetServiceProvider();
 
         expect(() =>
         {
-            sc.RegisterClass<ITest1, typeof Test1_a>(ServiceType.Singleton, ITest1Identifier, Test1_a);
+            sc.RegisterClass<ITest1, typeof Test1_a>(ServiceRegistrationMode.Single, ServiceType.Singleton, ITest1Identifier, Test1_a);
         })
-            .toThrowError(ServiceIdentifierAlreadyInUseError);
+            .toThrowError(ServiceIdentifierAlreadyInUse);
     });
 
     test("singleton: different registrations", () =>
     {
         const sc = new ServiceCollection();
-        const sp = sc.GetServiceProvider();
 
-        sc.RegisterClass<ITest1, typeof Test1_a>(ServiceType.Singleton, ITest1Identifier, Test1_a);
-        sc.RegisterClass<ITest2, typeof Test2_a>(ServiceType.Singleton, ITest2Identifier, Test2_a);
+        sc.RegisterClass<ITest1, typeof Test1_a>(ServiceRegistrationMode.Single, ServiceType.Singleton, ITest1Identifier, Test1_a);
+        sc.RegisterClass<ITest2, typeof Test2_a>(ServiceRegistrationMode.Single, ServiceType.Singleton, ITest2Identifier, Test2_a);
+
+        const sp = sc.GetServiceProvider();
 
         const test1_a_a = sp.GetService(ITest1Identifier);
         const test2_a_a = sp.GetService(ITest2Identifier);
@@ -58,9 +62,10 @@ describe("Service", () =>
     test("scoped: not allowed in global context", () =>
     {
         const sc = new ServiceCollection();
-        const sp = sc.GetServiceProvider();
 
-        sc.RegisterClass<ITest1, typeof Test1_a>(ServiceType.Scoped, ITest1Identifier, Test1_a);
+        sc.RegisterClass<ITest1, typeof Test1_a>(ServiceRegistrationMode.Single, ServiceType.Scoped, ITest1Identifier, Test1_a);
+
+        const sp = sc.GetServiceProvider();
 
         expect(() =>
         {
@@ -72,9 +77,10 @@ describe("Service", () =>
     test("scoped: register, create scope, get service", () =>
     {
         const sc = new ServiceCollection();
-        const sp = sc.GetServiceProvider();
 
-        sc.RegisterClass<ITest1, typeof Test1_a>(ServiceType.Scoped, ITest1Identifier, Test1_a);
+        sc.RegisterClass<ITest1, typeof Test1_a>(ServiceRegistrationMode.Single, ServiceType.Scoped, ITest1Identifier, Test1_a);
+
+        const sp = sc.GetServiceProvider();
 
         const scopeContext1 = sp.CreateScope();
         const scopeContext2 = sp.CreateScope();
@@ -99,9 +105,10 @@ describe("Service", () =>
     test("transient: register, get service", () =>
     {
         const sc = new ServiceCollection();
-        const sp = sc.GetServiceProvider();
 
-        sc.RegisterClass<ITest1, typeof Test1_a>(ServiceType.Transient, ITest1Identifier, Test1_a);
+        sc.RegisterClass<ITest1, typeof Test1_a>(ServiceRegistrationMode.Single, ServiceType.Transient, ITest1Identifier, Test1_a);
+
+        const sp = sc.GetServiceProvider();
 
         const test1_a_1 = sp.GetService(ITest1Identifier);
         const test1_a_2 = sp.GetService(ITest1Identifier);
@@ -119,9 +126,10 @@ describe("Service", () =>
     test("named: register, get service", () =>
     {
         const sc = new ServiceCollection();
-        const sp = sc.GetServiceProvider();
 
-        sc.RegisterClass<ITest1, typeof Test1_a>(ServiceType.Named, ITest1Identifier, Test1_a);
+        sc.RegisterClass<ITest1, typeof Test1_a>(ServiceRegistrationMode.Single, ServiceType.Named, ITest1Identifier, Test1_a);
+
+        const sp = sc.GetServiceProvider();
 
         const test1_a_1_name1 = sp.GetService(ITest1Identifier, "name1");
         const test1_a_2_name1 = sp.GetService(ITest1Identifier, "name1");
@@ -138,9 +146,10 @@ describe("Service", () =>
     test("named scoped: register, get service", () =>
     {
         const sc = new ServiceCollection();
-        const sp = sc.GetServiceProvider();
 
-        sc.RegisterClass<ITest1, typeof Test1_a>(ServiceType.ScopedNamed, ITest1Identifier, Test1_a);
+        sc.RegisterClass<ITest1, typeof Test1_a>(ServiceRegistrationMode.Single, ServiceType.ScopedNamed, ITest1Identifier, Test1_a);
+
+        const sp = sc.GetServiceProvider();
 
         expect(() =>
         {
@@ -169,28 +178,29 @@ describe("Service", () =>
     test("mixed with parameters", () =>
     {
         const sc = new ServiceCollection();
-        const sp = sc.GetServiceProvider();
 
         sc.RegisterClass<ITest1, typeof Test1_a>(
-            ServiceType.Transient, ITest1Identifier, Test1_a
+            ServiceRegistrationMode.Single, ServiceType.Transient, ITest1Identifier, Test1_a
         );
 
         sc.RegisterClass<ITest2, typeof Test2_a>(
-            ServiceType.Transient, ITest2Identifier, Test2_a
+            ServiceRegistrationMode.Single, ServiceType.Transient, ITest2Identifier, Test2_a
         );
 
         sc.RegisterClass<ITest3, typeof Test3_a>(
-            ServiceType.Scoped, ITest3Identifier, Test3_a, (classType, serviceProvider) => new classType(
+            ServiceRegistrationMode.Single, ServiceType.Scoped, ITest3Identifier, Test3_a, (classType, serviceProvider) => new classType(
                 serviceProvider.GetService(ITest1Identifier),
                 serviceProvider.GetService(ITest2Identifier)
             )
         );
 
         sc.RegisterClass<ITest4, typeof Test4_a>(
-            ServiceType.Singleton, ITest4Identifier, Test4_a, (classType, serviceProvider) => new classType(
+            ServiceRegistrationMode.Single, ServiceType.Singleton, ITest4Identifier, Test4_a, (classType, serviceProvider) => new classType(
                 serviceProvider.GetService(ITest3Identifier)
             )
         );
+
+        const sp = sc.GetServiceProvider();
 
         const scope = sp.CreateScope();
 

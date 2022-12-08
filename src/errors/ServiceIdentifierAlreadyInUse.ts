@@ -1,4 +1,4 @@
-export default class ServiceIdentifierAlreadyInUseError extends Error
+export default class ServiceIdentifierAlreadyInUse extends Error
 {
     constructor(message: string = "Service identifier already in use.")
     {

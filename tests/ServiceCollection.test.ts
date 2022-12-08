@@ -1,5 +1,6 @@
 import ServiceCollection from '../src/classes/ServiceCollection'
 import { IServiceCollection, IServiceCollectionIdentifier, ServiceType } from "@amaic/dijs-abstractions";
+import { ServiceRegistrationMode } from '@amaic/dijs-abstractions/dist/types/ServiceRegistrationMode';
 
 describe("ServiceCollection", () =>
 {
@@ -52,10 +53,9 @@ describe("ServiceCollection", () =>
 
         const serviceCollection = new ServiceCollection();
 
+        serviceCollection.RegisterClass<ITest1, typeof Test1>(ServiceRegistrationMode.Single, ServiceType.Singleton, ITest1Identifier, Test1);
+
         const serviceProvider = serviceCollection.GetServiceProvider();
-
-
-        serviceCollection.RegisterClass<ITest1, typeof Test1>(ServiceType.Singleton, ITest1Identifier, Test1);
 
         const test1 = serviceProvider.GetService<ITest1>(ITest1Identifier);
 

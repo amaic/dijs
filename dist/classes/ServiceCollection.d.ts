@@ -4,8 +4,6 @@ export default class ServiceCollection implements IServiceCollection {
     readonly IServiceCollection: symbol;
     constructor();
     private readonly _serviceDescriptors;
-    private readonly _mainScope;
-    private _getServiceDescriptor;
     private _registerService;
     RegisterInstance<INTERFACE, INSTANCE extends INTERFACE>(registrationMode: ServiceRegistrationMode, interfaceIdentifier: symbol, instance: INSTANCE): void;
     RegisterClass<INTERFACE, CLASSTYPE extends ServiceConstructor<INTERFACE>>(registrationMode: ServiceRegistrationMode, serviceType: ServiceType, interfaceIdentifier: symbol, classType: CLASSTYPE, constructor?: (classType: CLASSTYPE, serviceProvider: IServiceProvider, name?: string) => INTERFACE): void;

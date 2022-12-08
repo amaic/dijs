@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class ServiceIdentifierAlreadyInUseError extends Error {
+class ServiceIdentifierAlreadyInUse extends Error {
     constructor(message = "Service identifier already in use.") {
         super(message);
     }
 }
-exports.default = ServiceIdentifierAlreadyInUseError;
-//# sourceMappingURL=ServiceIdentifierAlreadyInUseError.js.map
+exports.default = ServiceIdentifierAlreadyInUse;
+//# sourceMappingURL=ServiceIdentifierAlreadyInUse.js.map

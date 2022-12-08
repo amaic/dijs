@@ -1,4 +1,4 @@
-export default class InstanceNameNotAvailableError extends Error
+export default class InstanceNameNotAvailable extends Error
 {
     constructor(message: string = "Instance name not available.")
     {
