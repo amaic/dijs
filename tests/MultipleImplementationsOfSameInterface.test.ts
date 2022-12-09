@@ -1,6 +1,5 @@
 import { ServiceCollection } from '../src';
-import { ServiceType, IServiceProvider } from "@amaic/dijs-abstractions";
-import { ServiceRegistrationMode } from '@amaic/dijs-abstractions/dist/types/ServiceRegistrationMode';
+import { ServiceType, IServiceProvider, ServiceRegistrationMode } from "@amaic/dijs-abstractions";
 
 describe("Multiple implementations of the same interface.", () =>
 {

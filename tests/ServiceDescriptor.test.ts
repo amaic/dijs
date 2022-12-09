@@ -1,6 +1,6 @@
 import { ServiceType } from '@amaic/dijs-abstractions';
 import ServiceDescriptor from '../src/classes/ServiceDescriptor';
-import IClone from '../src/interfaces/IClone';
+import ICloneable from '../src/interfaces/IClonable';
 
 describe("ServiceDescriptor", () =>
 {
@@ -17,7 +17,7 @@ describe("ServiceDescriptor", () =>
 
         origin.ServiceConstructors.push((sp, name) => `wie geht es Dir? ${name}`);
 
-        const clonable: IClone = origin;
+        const clonable: ICloneable = origin;
 
         const clone: ServiceDescriptor<string> = clonable.Clone();
 

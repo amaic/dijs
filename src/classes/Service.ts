@@ -5,6 +5,7 @@ import InstanceNameMandatory from "../errors/InstanceNameMandatory";
 import UnknownServiceIdentifierError from "../errors/UnknownServiceIdentifierError";
 import { IServiceProvider, ServiceType } from "@amaic/dijs-abstractions";
 import { ServiceConstructorFunction } from "../types/ServiceConstructorFunction";
+import InvalidServiceType from "../errors/InvalidServiceType";
 
 export default class Service<CLASS>
 {
@@ -21,10 +22,11 @@ export default class Service<CLASS>
 
     private readonly _serviceDescriptor: ServiceDescriptor<CLASS>;
 
-    private readonly _instances: StringKeyDictionary<CLASS> = {};
+    private readonly _instances: StringKeyDictionary<CLASS[]> = {};
 
-    private _getInstance(serviceConstructor: ServiceConstructorFunction<CLASS>, name?: string): CLASS
+    private _getInstance(serviceConstructorIndex: number, name?: string): CLASS
     {
+        let internalName: string;
         switch (this._serviceDescriptor.ServiceType)
         {
             case ServiceType.Instance:
@@ -35,28 +37,28 @@ export default class Service<CLASS>
                 if (name !== undefined)
                     throw new InstanceNameNotAvailable(`Service is of type '${ this._serviceDescriptor.ServiceType }' and parameter 'instanceName' must be null.`);
 
-                name = "";
+                internalName = "";
                 break;
 
             case ServiceType.Named:
             case ServiceType.ScopedNamed:
             case ServiceType.TransientNamed:
 
-                if (name === undefined || name.isEmptyOrWhitespace())
+                if (name == undefined || name.isEmptyOrWhitespace())
                     throw new InstanceNameMandatory(`Service is of type '${ this._serviceDescriptor.ServiceType }' and parameter 'name' must not be null, empty or whitespace.`);
 
+                internalName = name;
                 break;
 
             default:
-                break;
+                throw new InvalidServiceType();
         }
+
+        const serviceConstructor = this._serviceDescriptor.ServiceConstructors[serviceConstructorIndex];
 
         switch (this._serviceDescriptor.ServiceType)
         {
             case ServiceType.Transient:
-
-                return serviceConstructor(this._serviceProvider);
-
             case ServiceType.TransientNamed:
 
                 return serviceConstructor(this._serviceProvider, name);
@@ -64,25 +66,20 @@ export default class Service<CLASS>
             case ServiceType.Instance:
             case ServiceType.Singleton:
             case ServiceType.Scoped:
-
-                if (this._instances[""] === undefined)
-                {
-                    this._instances[""] = serviceConstructor(this._serviceProvider);
-                }
-                return this._instances[""];
-
             case ServiceType.Named:
             case ServiceType.ScopedNamed:
 
-                if (name !== undefined)
+                if (this._instances[internalName] == undefined)
                 {
-
-                    if (this._instances[name] === undefined)
-                    {
-                        this._instances[name] = serviceConstructor(this._serviceProvider, name);
-                    }
-                    return this._instances[name];
+                    this._instances[internalName] = new Array<CLASS>(this._serviceDescriptor.ServiceConstructors.length);
                 }
+
+                if (this._instances[internalName][serviceConstructorIndex] == undefined)
+                {
+                    this._instances[internalName][serviceConstructorIndex] = serviceConstructor(this._serviceProvider, name);
+                }
+
+                return this._instances[internalName][serviceConstructorIndex];
 
             default:
                 throw new UnknownServiceIdentifierError();
@@ -91,24 +88,22 @@ export default class Service<CLASS>
 
     public GetInstance(name?: string): CLASS
     {
-        const serviceConstructor = this._serviceDescriptor.ServiceConstructors.at(-1);
-        if (serviceConstructor == undefined)
+        const serviceConstructorIndex = this._serviceDescriptor.ServiceConstructors.length - 1;
+        if (serviceConstructorIndex < 0)
         {
             throw new Error("Should not happen: no service constructor found.");
         }
 
-        return this._getInstance(serviceConstructor, name);
+        return this._getInstance(serviceConstructorIndex, name);
     }
 
     public GetInstances(name?: string): CLASS[]
     {
-        const serviceConstructors = this._serviceDescriptor.ServiceConstructors;
-
         const instances: CLASS[] = [];
 
-        for (let serviceConstructor of serviceConstructors)        
-        { 
-            instances.push(this._getInstance(serviceConstructor, name));
+        for (let serviceConstructorIndex = 0; serviceConstructorIndex < this._serviceDescriptor.ServiceConstructors.length; serviceConstructorIndex++)        
+        {
+            instances.push(this._getInstance(serviceConstructorIndex, name));
         }
 
         return instances;

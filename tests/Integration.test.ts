@@ -1,7 +1,6 @@
 import '../src';
 import { ServiceCollection } from '../src';
-import { IServiceCollection, ServiceType } from "@amaic/dijs-abstractions";
-import { ServiceRegistrationMode } from '@amaic/dijs-abstractions/dist/types/ServiceRegistrationMode';
+import { IServiceCollection, ServiceRegistrationMode, ServiceType } from "@amaic/dijs-abstractions";
 
 describe("Integration", () =>
 {

@@ -2,8 +2,7 @@ import '../src';
 import ServiceCollection from "../src/classes/ServiceCollection";
 import ServiceIdentifierAlreadyInUse from "../src/errors/ServiceIdentifierAlreadyInUse";
 import ScopedNotAllowedInMainContext from "../src/errors/ScopedNotAllowedInMainContext";
-import { ServiceType } from "@amaic/dijs-abstractions";
-import { ServiceRegistrationMode } from '@amaic/dijs-abstractions/dist/types/ServiceRegistrationMode';
+import { ServiceRegistrationMode, ServiceType } from "@amaic/dijs-abstractions";
 
 describe("Service", () =>
 {
