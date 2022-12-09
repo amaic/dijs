@@ -11,6 +11,8 @@ export default class ServiceScope implements IServiceProvider {
     private _getService;
     GetService(serviceIdentifier: symbol, name?: string): any;
     GetRequiredService(serviceIdentifier: symbol, name?: string | undefined): any;
+    GetServices(serviceIdentifier: symbol, name?: string): any[];
+    GetRequiredServices(serviceIdentifier: symbol, name?: string | undefined): any;
     CreateScope(): IServiceProvider;
 }
 //# sourceMappingURL=ServiceScope.d.ts.map

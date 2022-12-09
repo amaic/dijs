@@ -23,7 +23,7 @@ describe("Multiple implementations of the same interface.", () =>
                 }
             });
 
-        const sp = sc.GetServiceProvider();
+        const sp = sc.CreateServiceProvider();
 
         const implementationC = sp.GetService<IInterface1>(IInterface1Identifier, 'C');
 
@@ -46,7 +46,7 @@ describe("Multiple implementations of the same interface.", () =>
         sc.RegisterClass<IInterface1, typeof ImplementationC>(ServiceRegistrationMode.Single, ServiceType.Transient, ServiceIdentifier_C, ImplementationC);
         sc.RegisterClass<IInterface1, typeof ImplementationD>(ServiceRegistrationMode.Single, ServiceType.Transient, ServiceIdentifier_D, ImplementationC);
 
-        const sp = sc.GetServiceProvider();
+        const sp = sc.CreateServiceProvider();
 
         const implementationC = sp.GetService<IInterface1>(ServiceIdentifier_C);
 
@@ -105,7 +105,7 @@ describe("Multiple implementations of the same interface.", () =>
             new classType(sp)
         );
 
-        const sp = sc.GetServiceProvider();
+        const sp = sc.CreateServiceProvider();
 
         const factory = sp.GetService<IFactory>(IFactoryIdentifier);
 

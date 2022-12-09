@@ -13,7 +13,7 @@ describe("Service", () =>
 
         sc.RegisterClass<ITest1, typeof Test1_a>(ServiceRegistrationMode.Single, ServiceType.Singleton, ITest1Identifier, Test1_a);
 
-        const sp = sc.GetServiceProvider();
+        const sp = sc.CreateServiceProvider();
 
         const test1_a_a = sp.GetService(ITest1Identifier);
 
@@ -27,7 +27,7 @@ describe("Service", () =>
 
         sc.RegisterClass<ITest1, typeof Test1_a>(ServiceRegistrationMode.Single, ServiceType.Singleton, ITest1Identifier, Test1_a);
 
-        const sp = sc.GetServiceProvider();
+        const sp = sc.CreateServiceProvider();
 
         expect(() =>
         {
@@ -43,7 +43,7 @@ describe("Service", () =>
         sc.RegisterClass<ITest1, typeof Test1_a>(ServiceRegistrationMode.Single, ServiceType.Singleton, ITest1Identifier, Test1_a);
         sc.RegisterClass<ITest2, typeof Test2_a>(ServiceRegistrationMode.Single, ServiceType.Singleton, ITest2Identifier, Test2_a);
 
-        const sp = sc.GetServiceProvider();
+        const sp = sc.CreateServiceProvider();
 
         const test1_a_a = sp.GetService(ITest1Identifier);
         const test2_a_a = sp.GetService(ITest2Identifier);
@@ -65,7 +65,7 @@ describe("Service", () =>
 
         sc.RegisterClass<ITest1, typeof Test1_a>(ServiceRegistrationMode.Single, ServiceType.Scoped, ITest1Identifier, Test1_a);
 
-        const sp = sc.GetServiceProvider();
+        const sp = sc.CreateServiceProvider();
 
         expect(() =>
         {
@@ -80,7 +80,7 @@ describe("Service", () =>
 
         sc.RegisterClass<ITest1, typeof Test1_a>(ServiceRegistrationMode.Single, ServiceType.Scoped, ITest1Identifier, Test1_a);
 
-        const sp = sc.GetServiceProvider();
+        const sp = sc.CreateServiceProvider();
 
         const scopeContext1 = sp.CreateScope();
         const scopeContext2 = sp.CreateScope();
@@ -108,7 +108,7 @@ describe("Service", () =>
 
         sc.RegisterClass<ITest1, typeof Test1_a>(ServiceRegistrationMode.Single, ServiceType.Transient, ITest1Identifier, Test1_a);
 
-        const sp = sc.GetServiceProvider();
+        const sp = sc.CreateServiceProvider();
 
         const test1_a_1 = sp.GetService(ITest1Identifier);
         const test1_a_2 = sp.GetService(ITest1Identifier);
@@ -129,7 +129,7 @@ describe("Service", () =>
 
         sc.RegisterClass<ITest1, typeof Test1_a>(ServiceRegistrationMode.Single, ServiceType.Named, ITest1Identifier, Test1_a);
 
-        const sp = sc.GetServiceProvider();
+        const sp = sc.CreateServiceProvider();
 
         const test1_a_1_name1 = sp.GetService(ITest1Identifier, "name1");
         const test1_a_2_name1 = sp.GetService(ITest1Identifier, "name1");
@@ -149,7 +149,7 @@ describe("Service", () =>
 
         sc.RegisterClass<ITest1, typeof Test1_a>(ServiceRegistrationMode.Single, ServiceType.ScopedNamed, ITest1Identifier, Test1_a);
 
-        const sp = sc.GetServiceProvider();
+        const sp = sc.CreateServiceProvider();
 
         expect(() =>
         {
@@ -200,7 +200,7 @@ describe("Service", () =>
             )
         );
 
-        const sp = sc.GetServiceProvider();
+        const sp = sc.CreateServiceProvider();
 
         const scope = sp.CreateScope();
 

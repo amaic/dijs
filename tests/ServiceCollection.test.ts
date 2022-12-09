@@ -8,7 +8,7 @@ describe("ServiceCollection", () =>
     {
         const serviceCollection1 = new ServiceCollection();
 
-        const serviceProvider = serviceCollection1.GetServiceProvider();
+        const serviceProvider = serviceCollection1.CreateServiceProvider();
 
         const serviceCollection2 = serviceProvider.GetService<IServiceCollection>(IServiceCollectionIdentifier);
 
@@ -55,7 +55,7 @@ describe("ServiceCollection", () =>
 
         serviceCollection.RegisterClass<ITest1, typeof Test1>(ServiceRegistrationMode.Single, ServiceType.Singleton, ITest1Identifier, Test1);
 
-        const serviceProvider = serviceCollection.GetServiceProvider();
+        const serviceProvider = serviceCollection.CreateServiceProvider();
 
         const test1 = serviceProvider.GetService<ITest1>(ITest1Identifier);
 

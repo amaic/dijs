@@ -13,11 +13,7 @@ class Service {
         this._serviceProvider = serviceProvider;
         this._serviceDescriptor = serviceDescriptor;
     }
-    GetInstance(name) {
-        const serviceConstructor = this._serviceDescriptor.ServiceConstructors.at(-1);
-        if (serviceConstructor == undefined) {
-            throw new Error("Should not happen: no service constructor found.");
-        }
+    _getInstance(serviceConstructor, name) {
         switch (this._serviceDescriptor.ServiceType) {
             case dijs_abstractions_1.ServiceType.Instance:
             case dijs_abstractions_1.ServiceType.Singleton:
@@ -59,6 +55,21 @@ class Service {
             default:
                 throw new UnknownServiceIdentifierError_1.default();
         }
+    }
+    GetInstance(name) {
+        const serviceConstructor = this._serviceDescriptor.ServiceConstructors.at(-1);
+        if (serviceConstructor == undefined) {
+            throw new Error("Should not happen: no service constructor found.");
+        }
+        return this._getInstance(serviceConstructor, name);
+    }
+    GetInstances(name) {
+        const serviceConstructors = this._serviceDescriptor.ServiceConstructors;
+        const instances = [];
+        for (let serviceConstructor of serviceConstructors) {
+            instances.push(this._getInstance(serviceConstructor, name));
+        }
+        return instances;
     }
 }
 exports.default = Service;

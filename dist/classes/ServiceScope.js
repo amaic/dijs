@@ -9,15 +9,11 @@ const UnknownServiceIdentifierError_1 = __importDefault(require("../errors/Unkno
 const Service_1 = __importDefault(require("./Service"));
 const dijs_abstractions_1 = require("@amaic/dijs-abstractions");
 class ServiceScope {
-    constructor(parentScope, serviceDescriptors
-    // getServiceDescriptor: (serviceIdentifier: symbol) => ServiceDescriptor<any> | undefined
-    ) {
+    constructor(parentScope, serviceDescriptors) {
         this.IServiceProvider = dijs_abstractions_1.IServiceProviderIdentifier;
-        // private readonly _getServiceDescriptor: (serviceIdentifier: symbol) => ServiceDescriptor<any> | undefined;
         this._services = {};
         this._parentScope = parentScope;
         this._serviceDescriptors = serviceDescriptors;
-        // this._getServiceDescriptor = getServiceDescriptor;
     }
     get IsMainContext() {
         return this._parentScope == null;
@@ -52,7 +48,6 @@ class ServiceScope {
         }
     }
     GetService(serviceIdentifier, name) {
-        // const serviceDescriptor = this._getServiceDescriptor(serviceIdentifier);
         const serviceDescriptor = this._serviceDescriptors[serviceIdentifier];
         if (serviceDescriptor === undefined)
             return null;
@@ -60,12 +55,25 @@ class ServiceScope {
         return service.GetInstance(name);
     }
     GetRequiredService(serviceIdentifier, name) {
-        // const serviceDescriptor = this._getServiceDescriptor(serviceIdentifier);
         const serviceDescriptor = this._serviceDescriptors[serviceIdentifier];
         if (serviceDescriptor === undefined)
             throw new UnknownServiceIdentifierError_1.default(`Service with identifier '${serviceIdentifier.description}' not found.`);
         const service = this._getService(serviceDescriptor);
         return service.GetInstance(name);
+    }
+    GetServices(serviceIdentifier, name) {
+        const serviceDescriptor = this._serviceDescriptors[serviceIdentifier];
+        if (serviceDescriptor === undefined)
+            return [];
+        const service = this._getService(serviceDescriptor);
+        return service.GetInstances(name);
+    }
+    GetRequiredServices(serviceIdentifier, name) {
+        const serviceDescriptor = this._serviceDescriptors[serviceIdentifier];
+        if (serviceDescriptor === undefined)
+            throw new UnknownServiceIdentifierError_1.default(`Service with identifier '${serviceIdentifier.description}' not found.`);
+        const service = this._getService(serviceDescriptor);
+        return service.GetInstances(name);
     }
     CreateScope() {
         return new ServiceScope(this, this._serviceDescriptors);

@@ -4,6 +4,7 @@ import InstanceNameNotAvailable from "../errors/InstanceNameNotAvailable";
 import InstanceNameMandatory from "../errors/InstanceNameMandatory";
 import UnknownServiceIdentifierError from "../errors/UnknownServiceIdentifierError";
 import { IServiceProvider, ServiceType } from "@amaic/dijs-abstractions";
+import { ServiceConstructorFunction } from "../types/ServiceConstructorFunction";
 
 export default class Service<CLASS>
 {
@@ -22,14 +23,8 @@ export default class Service<CLASS>
 
     private readonly _instances: StringKeyDictionary<CLASS> = {};
 
-    public GetInstance(name?: string): CLASS
+    private _getInstance(serviceConstructor: ServiceConstructorFunction<CLASS>, name?: string): CLASS
     {
-        const serviceConstructor = this._serviceDescriptor.ServiceConstructors.at(-1);
-        if (serviceConstructor == undefined)
-        {
-            throw new Error("Should not happen: no service constructor found.");
-        }
-
         switch (this._serviceDescriptor.ServiceType)
         {
             case ServiceType.Instance:
@@ -92,5 +87,30 @@ export default class Service<CLASS>
             default:
                 throw new UnknownServiceIdentifierError();
         }
+    }
+
+    public GetInstance(name?: string): CLASS
+    {
+        const serviceConstructor = this._serviceDescriptor.ServiceConstructors.at(-1);
+        if (serviceConstructor == undefined)
+        {
+            throw new Error("Should not happen: no service constructor found.");
+        }
+
+        return this._getInstance(serviceConstructor, name);
+    }
+
+    public GetInstances(name?: string): CLASS[]
+    {
+        const serviceConstructors = this._serviceDescriptor.ServiceConstructors;
+
+        const instances: CLASS[] = [];
+
+        for (let serviceConstructor of serviceConstructors)        
+        { 
+            instances.push(this._getInstance(serviceConstructor, name));
+        }
+
+        return instances;
     }
 }

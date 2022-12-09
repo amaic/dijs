@@ -1,5 +1,6 @@
-import { IServiceProvider, ServiceType } from "@amaic/dijs-abstractions";
+import { ServiceType } from "@amaic/dijs-abstractions";
 import ICloneable, { ICloneableIdentifier } from "../interfaces/IClonable";
+import { ServiceConstructorFunction } from "../types/ServiceConstructorFunction";
 
 export default class ServiceDescriptor<CLASS> implements ICloneable
 {
@@ -8,7 +9,7 @@ export default class ServiceDescriptor<CLASS> implements ICloneable
     constructor(
         serviceIdentifier: symbol,
         serviceType: ServiceType,
-        serviceConstructor: (serviceProvider: IServiceProvider, name?: string) => CLASS
+        serviceConstructor: ServiceConstructorFunction<CLASS>
     )
     {
         this.ServiceIdentifier = serviceIdentifier;
@@ -20,7 +21,7 @@ export default class ServiceDescriptor<CLASS> implements ICloneable
 
     public readonly ServiceType: ServiceType;
 
-    public readonly ServiceConstructors: Array<(serviceProvider: IServiceProvider, name?: string) => CLASS>;
+    public readonly ServiceConstructors: Array<ServiceConstructorFunction<CLASS>>;
 
     public Clone(): ServiceDescriptor<CLASS>
     {

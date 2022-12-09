@@ -13,19 +13,15 @@ export default class ServiceScope implements IServiceProvider
     constructor(
         parentScope: ServiceScope | null,
         serviceDescriptors: SymbolKeyDictionary<ServiceDescriptor<any>>
-        // getServiceDescriptor: (serviceIdentifier: symbol) => ServiceDescriptor<any> | undefined
     )
     {
         this._parentScope = parentScope;
         this._serviceDescriptors = serviceDescriptors;
-        // this._getServiceDescriptor = getServiceDescriptor;
     }
 
     private readonly _parentScope: ServiceScope | null;
 
     private readonly _serviceDescriptors: SymbolKeyDictionary<ServiceDescriptor<any>>;
-
-    // private readonly _getServiceDescriptor: (serviceIdentifier: symbol) => ServiceDescriptor<any> | undefined;
 
     private readonly _services: SymbolKeyDictionary<Service<any>> = {};
 
@@ -85,7 +81,6 @@ export default class ServiceScope implements IServiceProvider
 
     public GetService(serviceIdentifier: symbol, name?: string): any
     {
-        // const serviceDescriptor = this._getServiceDescriptor(serviceIdentifier);
         const serviceDescriptor = this._serviceDescriptors[serviceIdentifier];
 
         if (serviceDescriptor === undefined)
@@ -98,7 +93,6 @@ export default class ServiceScope implements IServiceProvider
 
     public GetRequiredService(serviceIdentifier: symbol, name?: string | undefined): any
     {
-        // const serviceDescriptor = this._getServiceDescriptor(serviceIdentifier);
         const serviceDescriptor = this._serviceDescriptors[serviceIdentifier];
 
         if (serviceDescriptor === undefined)
@@ -109,6 +103,29 @@ export default class ServiceScope implements IServiceProvider
         return service.GetInstance(name);
     }
 
+    public GetServices(serviceIdentifier: symbol, name?: string): any[]
+    {
+        const serviceDescriptor = this._serviceDescriptors[serviceIdentifier];
+
+        if (serviceDescriptor === undefined)
+            return [];
+
+        const service = this._getService(serviceDescriptor)
+
+        return service.GetInstances(name);
+    }
+
+    public GetRequiredServices(serviceIdentifier: symbol, name?: string | undefined): any
+    {
+        const serviceDescriptor = this._serviceDescriptors[serviceIdentifier];
+
+        if (serviceDescriptor === undefined)
+            throw new UnknownServiceIdentifierError(`Service with identifier '${ serviceIdentifier.description }' not found.`);
+
+        const service = this._getService(serviceDescriptor)
+
+        return service.GetInstances(name);
+    }
 
     public CreateScope(): IServiceProvider
     {
