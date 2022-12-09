@@ -133,7 +133,7 @@ describe("ServiceCollection", () =>
             () => "C"
         );
 
-        const sp = sc.CreateServiceProvider() as ServiceScope;
+        const sp = sc.CreateServiceProvider();
 
         const latestRegisteredService = sp.GetRequiredService(interface1);
 

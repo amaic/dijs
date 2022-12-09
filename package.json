@@ -1,6 +1,6 @@
 {
   "name": "@amaic/dijs",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "dependency injection",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -40,6 +40,6 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "@amaic/dijs-abstractions": "^0.7.0"
+    "@amaic/dijs-abstractions": "^0.8.0"
   }
 }
