@@ -4,4 +4,3 @@ export declare type StringKeyDictionary<Class> = {
 export declare type SymbolKeyDictionary<Class> = {
     [key: symbol]: Class;
 };
-//# sourceMappingURL=Dictionary.d.ts.map

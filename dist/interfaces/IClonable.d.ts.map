@@ -1,1 +1,0 @@
-{"version":3,"file":"IClonable.d.ts","sourceRoot":"","sources":["../../src/interfaces/IClonable.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,WAAW,UAAU;IAE/B,UAAU,EAAE,MAAM,CAAC;IAEnB,KAAK,IAAI,GAAG,CAAC;CAChB;AAED,eAAO,MAAM,oBAAoB,eAAuB,CAAC;AAEzD,wBAAgB,YAAY,CAAC,QAAQ,EAAE,GAAG,GAAG,QAAQ,IAAI,UAAU,CAGlE"}

@@ -9,4 +9,3 @@ export default class Service<CLASS> {
     GetInstance(name?: string): CLASS;
     GetInstances(name?: string): CLASS[];
 }
-//# sourceMappingURL=Service.d.ts.map

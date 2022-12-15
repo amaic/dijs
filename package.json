@@ -1,12 +1,8 @@
 {
   "name": "@amaic/dijs",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "dependency injection",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "main": "./dist/index.js",
   "scripts": {
     "delete": "rimraf ./dist/",
     "build": "npm run delete && tsc --build",

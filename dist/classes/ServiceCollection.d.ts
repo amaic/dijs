@@ -9,4 +9,3 @@ export default class ServiceCollection implements IServiceCollection {
     RegisterFactory<INTERFACE>(registrationMode: ServiceRegistrationMode, serviceType: ServiceType, interfaceIdentifier: symbol, factory: (serviceProvider: IServiceProvider, name?: string) => INTERFACE): void;
     CreateServiceProvider(): IServiceProvider;
 }
-//# sourceMappingURL=ServiceCollection.d.ts.map

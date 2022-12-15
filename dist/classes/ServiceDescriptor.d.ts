@@ -9,4 +9,3 @@ export default class ServiceDescriptor<CLASS> implements ICloneable {
     readonly ServiceConstructors: Array<ServiceConstructorFunction<CLASS>>;
     Clone(): ServiceDescriptor<CLASS>;
 }
-//# sourceMappingURL=ServiceDescriptor.d.ts.map
